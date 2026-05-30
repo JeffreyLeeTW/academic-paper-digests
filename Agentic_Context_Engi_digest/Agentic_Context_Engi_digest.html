@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>論文摘要：Agentic Context Engineering</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --muted: #888888;
+    --accent: #4A90D9;
+    --table-stripe: #f5f5f5;
+    --border: #e0e0e0;
+    --code-bg: #f0f4f8;
+    --highlight-bg: #fff8e1;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a1a1a;
+      --fg: #e8e8e8;
+      --muted: #999999;
+      --accent: #7ab3e8;
+      --table-stripe: #2a2a2a;
+      --border: #3a3a3a;
+      --code-bg: #2d3748;
+      --highlight-bg: #3a3520;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC",
+                 "Noto Sans TC", sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.8;
+    font-size: 16px;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+  h1 { font-size: 1.75rem; margin-bottom: 0.4rem; line-height: 1.3; }
+  h2 { font-size: 1.35rem; margin: 2.5rem 0 0.8rem; border-bottom: 2px solid var(--border); padding-bottom: 0.4rem; }
+  h3 { font-size: 1.05rem; margin: 1.6rem 0 0.5rem; color: var(--accent); }
+  h4 { font-size: 1rem; margin: 1.2rem 0 0.4rem; font-weight: 600; }
+  p { margin-bottom: 0.9rem; }
+  .location {
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-style: italic;
+    background: var(--code-bg);
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    margin-right: 0.3rem;
+    white-space: nowrap;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0 1.5rem;
+    font-size: 0.88rem;
+  }
+  th {
+    background: var(--accent);
+    color: #fff;
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+  }
+  td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: var(--table-stripe); }
+  tr.highlight td { background: var(--highlight-bg); font-weight: 600; }
+  code {
+    background: var(--code-bg);
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+    font-size: 0.85rem;
+  }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+    overflow-x: auto;
+    font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+    font-size: 0.85rem;
+    margin: 0.8rem 0 1.2rem;
+    line-height: 1.6;
+  }
+  .keyword-list { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.5rem 0 1rem; }
+  .keyword-tag {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.2rem 0.6rem;
+    font-family: monospace;
+    font-size: 0.85rem;
+    color: var(--accent);
+  }
+  .toc {
+    background: var(--table-stripe);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.5rem;
+    margin-bottom: 2.5rem;
+    border-radius: 0 6px 6px 0;
+  }
+  .toc strong { display: block; margin-bottom: 0.4rem; font-size: 1rem; }
+  .toc ol { margin: 0.4rem 0 0 1.2rem; }
+  .toc li { margin: 0.3rem 0; }
+  .toc a { color: var(--accent); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  ul, ol { margin: 0.5rem 0 0.9rem 1.5rem; }
+  li { margin: 0.35rem 0; }
+  .meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+  }
+  .meta span { margin-right: 1.5rem; }
+  .section { margin-bottom: 2.5rem; }
+  .callout {
+    background: var(--highlight-bg);
+    border-left: 4px solid #f0a500;
+    padding: 0.8rem 1.2rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.95rem;
+  }
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-style: italic;
+  }
+  .arch-flow {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.5rem;
+    margin: 1rem 0;
+    font-family: monospace;
+    font-size: 0.9rem;
+    line-height: 2;
+  }
+</style>
+</head>
+<body>
+
+<h1>論文摘要：Agentic Context Engineering:<br>Evolving Contexts for Self-Improving Language Models</h1>
+<div class="meta">
+  <span>分析日期：2026-05-30</span>
+  <span>原始論文：2510.04618v3.pdf</span>
+  <span>發表於：ICLR 2026</span>
+  <span>作者：Qizheng Zhang, Changran Hu et al.（Stanford / SambaNova / UC Berkeley）</span>
+</div>
+
+<nav class="toc">
+  <strong>目錄</strong>
+  <ol>
+    <li><a href="#overview">整體內容</a></li>
+    <li><a href="#methodology">研究方法</a></li>
+    <li><a href="#results">主要結果</a></li>
+    <li><a href="#keywords">英文關鍵字</a></li>
+    <li><a href="#improvements">值得改進之處</a></li>
+  </ol>
+</nav>
+
+<!-- ==================== 整體內容 ==================== -->
+<section id="overview" class="section">
+  <h2>一、整體內容</h2>
+
+  <h3>研究問題</h3>
+  <p>
+    <span class="location">第 1 頁，第 20–35 行</span>
+    現有的語境適應（context adaptation）方法存在兩大核心缺陷：
+  </p>
+  <ul>
+    <li><strong>Brevity Bias（簡潔偏誤）</strong>：優化器傾向產生過度簡化的摘要，丟失領域特定知識與細節策略。</li>
+    <li><strong>Context Collapse（語境崩潰）</strong>：迭代式整體重寫（monolithic rewriting）會隨時間侵蝕所累積的細節。例如，在 AppWorld 實驗中觀察到：第 60 步語境達 18,282 token、準確率 66.7，但下一步崩潰至 122 token，準確率跌至 57.1，甚至低於無適應基準線 63.7。</li>
+  </ul>
+
+  <h3>研究背景</h3>
+  <p>
+    <span class="location">第 2 頁，第 1–30 行</span>
+    LLM 應用（如 agents 和複合式 AI 系統）日益依賴「語境適應」而非「權重更新」來提升效能，原因在於：可解釋性強、可在執行期間快速整合新知識、可跨模型共用。隨著長語境 LLM 與 KV cache 複用技術進步，此方法愈加實用。然而現有方法（如 GEPA、Dynamic Cheatsheet）均存在上述限制，在需要詳細領域知識的場景中（多步驟 agent、知識密集推理）難以穩定表現。
+  </p>
+
+  <h3>核心貢獻</h3>
+  <ol>
+    <li>
+      <span class="location">第 2 頁，第 35–50 行</span>
+      提出 <strong>ACE（Agentic Context Engineering）</strong>框架，將語境視為持續累積、精煉與組織策略的「演進式 Playbook」，而非壓縮後的簡短摘要。
+    </li>
+    <li>
+      <span class="location">第 4 頁，第 3–15 行</span>
+      設計<strong>三角色模組架構</strong>：Generator（生成推理軌跡）、Reflector（從成功與失敗中提煉洞察）、Curator（整合洞察為結構化語境更新），各司其職，避免單一模型負擔過重。
+    </li>
+    <li>
+      <span class="location">第 5 頁，第 1–20 行</span>
+      引入<strong>增量 delta 更新（incremental delta updates）</strong>機制，以局部化編輯取代整體重寫，大幅降低延遲與計算成本。
+    </li>
+    <li>
+      <span class="location">第 5 頁，第 22–35 行</span>
+      提出 <strong>Grow-and-Refine</strong> 機制，透過語義嵌入去重（semantic deduplication）平衡語境擴展與冗餘控制。
+    </li>
+  </ol>
+
+  <h3>研究範疇</h3>
+  <p>
+    <span class="location">第 6 頁，第 7–35 行</span>
+    實驗聚焦於兩類最受益於演進式語境的 LLM 應用：(1) <strong>LLM Agent</strong>（AppWorld 基準，含多輪推理、工具使用、環境互動）；(2) <strong>領域特定推理</strong>（金融分析：FiNER、Formula；醫療：DDXPlus；Text-to-SQL：BIRD-SQL）。主要骨幹模型為 DeepSeek-V3.1-671B，並附加 GPT-5.1、Llama-3.3-70B 等多模型驗證。
+  </p>
+</section>
+
+<!-- ==================== 研究方法 ==================== -->
+<section id="methodology" class="section">
+  <h2>二、研究方法</h2>
+
+  <h3>方法概述</h3>
+  <p>
+    <span class="location">第 4 頁，第 1–15 行</span>
+    ACE 以「演進式 Playbook」概念取代傳統「指令壓縮」思路：語境以結構化條目（bullet）形式累積，由 Generator、Reflector、Curator 三角色協作，執行「生成 → 反思 → 整合」的迭代循環。透過增量更新防止語境崩潰，透過 grow-and-refine 維持精簡度。
+  </p>
+
+  <h3>架構說明</h3>
+  <p><span class="location">第 5 頁，第 4–6 行，Figure 4</span> 主要工作流程：</p>
+  <div class="arch-flow">
+    Query → <strong>Generator</strong>（推理軌跡）<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ Trajectory + bullet 使用回饋<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<strong>Reflector</strong>（提煉洞察，可多輪精煉）<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ Insights<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<strong>Curator</strong>（生成 delta 語境條目）<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ Delta Context Items<br>
+    &nbsp;&nbsp;&nbsp;非 LLM 邏輯合併 → <strong>Context Playbook</strong>（更新）<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ 回饋給下一輪 Generator
+  </div>
+
+  <h3>關鍵模組</h3>
+  <table>
+    <thead>
+      <tr><th>模組名稱</th><th>輸入</th><th>處理</th><th>輸出</th><th>位置</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Generator</strong></td>
+        <td>Context Playbook + Query</td>
+        <td>以 ReAct 框架生成推理軌跡；標記哪些 bullet 有用/有害</td>
+        <td>推理軌跡 + bullet 回饋</td>
+        <td><span class="location">第 5 頁，第 1–8 行</span></td>
+      </tr>
+      <tr>
+        <td><strong>Reflector</strong></td>
+        <td>推理軌跡 + 執行結果（可含 GT label）</td>
+        <td>分析成功/失敗原因，提煉具體洞察；可多輪精煉（最多 5 輪）</td>
+        <td>具體策略洞察（Insights）</td>
+        <td><span class="location">第 4 頁，第 15–25 行</span></td>
+      </tr>
+      <tr>
+        <td><strong>Curator</strong></td>
+        <td>Insights</td>
+        <td>將洞察濃縮為緊湊的 delta 語境條目（帶 ID 與計數器的 bullet）</td>
+        <td>Delta Context Items</td>
+        <td><span class="location">第 5 頁，第 8–20 行</span></td>
+      </tr>
+      <tr>
+        <td><strong>語境合併（非 LLM）</strong></td>
+        <td>現有 Playbook + Delta</td>
+        <td>追加新 bullet；更新現有 bullet 計數器；語義嵌入去重</td>
+        <td>更新後的 Context Playbook</td>
+        <td><span class="location">第 5 頁，第 22–35 行</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>核心設計：Bullet 結構</h3>
+  <p>
+    <span class="location">第 5 頁，第 1–15 行</span>
+    每個 bullet 由兩部分組成：
+  </p>
+  <ul>
+    <li><strong>Metadata</strong>：唯一識別碼（unique identifier）+ 標記為「有用」或「有害」的計數器</li>
+    <li><strong>Content</strong>：可複用的策略、領域概念，或常見失敗模式</li>
+  </ul>
+  <p>此設計實現三個屬性：局部化（localization）、細粒度檢索（fine-grained retrieval）、增量適應（incremental adaptation）。</p>
+
+  <h3>訓練策略</h3>
+  <p>
+    <span class="location">第 7 頁，第 18–25 行</span>
+  </p>
+  <ul>
+    <li><strong>骨幹模型</strong>：DeepSeek-V3.1（non-thinking mode），Generator、Reflector、Curator 使用同一模型以確保公平性。</li>
+    <li><strong>批次大小</strong>：1（每個樣本生成一份 delta 語境）</li>
+    <li><strong>最大 Reflector 精煉輪數</strong>：5</li>
+    <li><strong>最大 Epoch 數</strong>（離線適應）：5</li>
+    <li><strong>適應模式</strong>：離線（offline，訓練集優化後在測試集評估）與線上（online，測試集逐樣本更新語境）</li>
+  </ul>
+</section>
+
+<!-- ==================== 主要結果 ==================== -->
+<section id="results" class="section">
+  <h2>三、主要結果</h2>
+
+  <h3>實驗設定</h3>
+  <p>
+    <span class="location">第 6 頁，第 7–37 行</span>
+    <strong>資料集（dataset）</strong>：AppWorld（agent）、FiNER（金融 NER）、Formula（金融數值推理）、DDXPlus（醫療診斷）、BIRD-SQL（text-to-SQL）。<br>
+    <strong>評估指標（evaluation metric）</strong>：AppWorld 使用 Task Goal Completion（TGC）與 Scenario Goal Completion（SGC）；FiNER / Formula / DDXPlus 使用 exact match 準確率；BIRD-SQL 使用 GPT-4o-mini 作為 LLM-as-a-judge。
+  </p>
+
+  <h3>主要比較結果（AppWorld Agent 基準）</h3>
+  <p><span class="location">第 7 頁，第 27–52 行</span></p>
+  <table>
+    <thead>
+      <tr><th>方法</th><th>GT Labels</th><th>Test-Normal TGC</th><th>Test-Challenge TGC</th><th>Average</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>ReAct（Base LLM）</td><td>—</td><td>63.7</td><td>41.5</td><td>42.4</td></tr>
+      <tr><td>ReAct + ICL</td><td>✓</td><td>64.3</td><td>46.0</td><td>46.0 (+3.6)</td></tr>
+      <tr><td>ReAct + GEPA</td><td>✓</td><td>64.9</td><td>46.0</td><td>46.4 (+4.0)</td></tr>
+      <tr class="highlight"><td><strong>ReAct + ACE（offline）</strong></td><td>✓</td><td><strong>76.2</strong></td><td><strong>57.3</strong></td><td><strong>59.4 (+17.0)</strong></td></tr>
+      <tr><td>ReAct + ACE（offline，無 GT）</td><td>✗</td><td>75.0</td><td>54.4</td><td>57.2 (+14.8)</td></tr>
+      <tr><td>ReAct + DC (CU)（online）</td><td>✗</td><td>65.5</td><td>52.3</td><td>51.9 (+9.5)</td></tr>
+      <tr class="highlight"><td><strong>ReAct + ACE（online，無 GT）</strong></td><td>✗</td><td><strong>69.6</strong></td><td><strong>66.0</strong></td><td><strong>59.5 (+17.1)</strong></td></tr>
+    </tbody>
+  </table>
+
+  <h3>主要比較結果（金融領域基準）</h3>
+  <p><span class="location">第 8 頁，第 14–28 行</span></p>
+  <table>
+    <thead>
+      <tr><th>方法</th><th>GT Labels</th><th>FiNER Acc</th><th>Formula Acc</th><th>Average</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Base LLM</td><td>—</td><td>70.7</td><td>67.5</td><td>69.1</td></tr>
+      <tr><td>ICL</td><td>✓</td><td>72.3</td><td>67.0</td><td>69.6 (+0.5)</td></tr>
+      <tr><td>MIPROv2</td><td>✓</td><td>72.4</td><td>69.5</td><td>70.9 (+1.8)</td></tr>
+      <tr><td>GEPA</td><td>✓</td><td>73.5</td><td>71.5</td><td>72.5 (+3.4)</td></tr>
+      <tr class="highlight"><td><strong>ACE（offline）</strong></td><td>✓</td><td><strong>78.3</strong></td><td><strong>85.5</strong></td><td><strong>81.9 (+12.8)</strong></td></tr>
+      <tr><td>DC (CU)（online）</td><td>✓</td><td>74.2</td><td>69.5</td><td>71.8 (+2.7)</td></tr>
+      <tr class="highlight"><td><strong>ACE（online）</strong></td><td>✓</td><td><strong>76.7</strong></td><td><strong>76.5</strong></td><td><strong>76.6 (+7.5)</strong></td></tr>
+    </tbody>
+  </table>
+
+  <h3>成本與速度分析</h3>
+  <p><span class="location">第 10 頁，第 4–32 行</span></p>
+  <table>
+    <thead>
+      <tr><th>比較場景</th><th>延遲降低</th><th>其他節省</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>ACE vs GEPA（離線，AppWorld）</td>
+        <td><strong>-82.3%</strong>（9,517s vs 53,898s）</td>
+        <td>Rollouts 減少 75.1%（357 vs 1,434）</td>
+      </tr>
+      <tr>
+        <td>ACE vs DC（線上，FiNER）</td>
+        <td><strong>-91.5%</strong>（5,503s vs 65,104s）</td>
+        <td>Token 費用降低 83.6%（$2.9 vs $17.7）</td>
+      </tr>
+      <tr>
+        <td>KV Cache 複用（GPT-5.1，評估階段）</td>
+        <td>—</td>
+        <td>91.8% 輸入 token 由快取提供，計費成本降低 82.6%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>消融實驗（Ablation Study）</h3>
+  <p><span class="location">第 9 頁，第 16–43 行</span></p>
+  <table>
+    <thead>
+      <tr><th>消融設定</th><th>Average 準確率</th><th>與完整 ACE 差距</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>去掉 Reflector 與 multi-epoch</td><td>55.1</td><td>-4.3%</td></tr>
+      <tr><td>去掉 multi-epoch</td><td>56.8</td><td>-2.6%</td></tr>
+      <tr class="highlight"><td><strong>完整 ACE（offline）</strong></td><td><strong>59.4</strong></td><td>—</td></tr>
+      <tr><td>ACE（online，無 offline warmup）</td><td>56.1</td><td>-3.4%</td></tr>
+      <tr class="highlight"><td><strong>ACE（online，含 offline warmup）</strong></td><td><strong>59.5</strong></td><td>—</td></tr>
+    </tbody>
+  </table>
+
+  <h3>主要發現</h3>
+  <div class="callout">
+    <span class="location">第 8 頁，第 7–12 行</span>
+    ACE 在 AppWorld leaderboard（截至 2025 年 9 月 20 日）以 59.4% 平均準確率匹配排名第一的商業生產級 agent IBM CUGA（GPT-4.1，60.3%），但使用的是更小的開源模型 DeepSeek-V3.1。在 online 適應設定下，ACE 甚至超越 IBM CUGA（test-challenge TGC 高出 8.4%）。
+  </div>
+
+  <h3>侷限性（作者自述）</h3>
+  <p><span class="location">第 10 頁，第 44–55 行</span></p>
+  <ol>
+    <li>ACE 依賴具備足夠能力的 Reflector；若 Reflector 失效，語境可能被雜訊污染甚至造成負面影響。</li>
+    <li>在缺乏可靠回饋信號（無 ground-truth labels 或執行結果）的場景中，ACE 和 DC 均可能出現性能下降，語境被錯誤信號污染。</li>
+    <li>ACE 最適合需要詳細領域知識的場景；對於問題空間簡單、策略固定的任務（如 HotPotQA、Game of 24），豐富化的語境可能是冗餘的。</li>
+  </ol>
+</section>
+
+<!-- ==================== 關鍵字 ==================== -->
+<section id="keywords" class="section">
+  <h2>四、英文關鍵字</h2>
+
+  <h3>Author Keywords</h3>
+  <p>論文未設獨立 Keywords 欄位，以下關鍵字從 Abstract 與正文提取。</p>
+
+  <h3>Method Keywords（方法相關）</h3>
+  <div class="keyword-list">
+    <span class="keyword-tag">context engineering</span>
+    <span class="keyword-tag">agentic framework</span>
+    <span class="keyword-tag">incremental delta updates</span>
+    <span class="keyword-tag">grow-and-refine</span>
+    <span class="keyword-tag">semantic deduplication</span>
+    <span class="keyword-tag">KV cache reuse</span>
+  </div>
+  <ul>
+    <li><code>context engineering</code> — <span class="location">第 1 頁，第 20 行</span></li>
+    <li><code>agentic framework</code> — <span class="location">第 4 頁，第 3 行</span></li>
+    <li><code>incremental delta updates</code> — <span class="location">第 5 頁，第 1 行</span></li>
+    <li><code>grow-and-refine</code> — <span class="location">第 5 頁，第 22 行</span></li>
+    <li><code>semantic deduplication</code> — <span class="location">第 5 頁，第 28 行</span></li>
+    <li><code>KV cache reuse</code> — <span class="location">第 10 頁，第 24 行</span></li>
+  </ul>
+
+  <h3>Topic Keywords（領域相關）</h3>
+  <div class="keyword-list">
+    <span class="keyword-tag">context adaptation</span>
+    <span class="keyword-tag">LLM agents</span>
+    <span class="keyword-tag">self-improving language models</span>
+    <span class="keyword-tag">prompt optimization</span>
+    <span class="keyword-tag">test-time learning</span>
+    <span class="keyword-tag">domain-specific reasoning</span>
+  </div>
+  <ul>
+    <li><code>context adaptation</code> — <span class="location">第 2 頁，第 3 行</span></li>
+    <li><code>LLM agents</code> — <span class="location">第 1 頁，第 28 行</span></li>
+    <li><code>self-improving language models</code> — <span class="location">第 1 頁，第 1 行</span></li>
+    <li><code>prompt optimization</code> — <span class="location">第 3 頁，第 2 行</span></li>
+    <li><code>test-time learning</code> — <span class="location">第 7 頁，第 10 行</span></li>
+    <li><code>domain-specific reasoning</code> — <span class="location">第 6 頁，第 10 行</span></li>
+  </ul>
+</section>
+
+<!-- ==================== 改進之處 ==================== -->
+<section id="improvements" class="section">
+  <h2>五、值得改進之處</h2>
+
+  <h3>作者已承認的不足</h3>
+  <ol>
+    <li>
+      <span class="location">第 10 頁，第 44–48 行</span>
+      ACE 依賴能力足夠強的 Reflector——若 Reflector 無法從軌跡中提取有意義的洞察，語境可能被雜訊污染，這與 Dynamic Cheatsheet 的根本依賴性相似。
+    </li>
+    <li>
+      <span class="location">第 8 頁，第 43–48 行</span>
+      缺乏可靠回饋信號時（如無 GT labels 或無清晰執行結果），ACE 和 DC 均可能退化，語境品質無法保證。
+    </li>
+    <li>
+      <span class="location">第 10 頁，第 50–55 行</span>
+      並非所有任務都需要豐富的詳細語境——對於 HotPotQA 等簡潔高層指令已足夠的任務，以及 Game of 24 等固定策略遊戲，ACE 的語境豐富化可能是冗餘的。
+    </li>
+  </ol>
+
+  <h3>獨立分析觀察</h3>
+  <table>
+    <thead>
+      <tr><th>維度</th><th>潛在問題</th><th>改進建議</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>方法論（Methodology）</strong></td>
+        <td>三角色架構均使用相同 LLM，論文稱此為公平設計，但也限制了分工的實際效益；三次串行 LLM 呼叫在資源有限場景中仍有開銷。</td>
+        <td>探索輕量化模型作為 Curator、強模型作為 Reflector，以降低整體推理成本並實現更真正的角色分工。</td>
+      </tr>
+      <tr>
+        <td><strong>實驗設計（Experimental Design）</strong></td>
+        <td>基準線（GEPA、DC）均為近期方法，缺少與 RAG、fine-tuning 等傳統方法的橫向比較，難以確立 ACE 的絕對優勢。</td>
+        <td>補充與 LoRA fine-tuning 或 RAG pipeline 的成本效益比較，提供更完整的方法定位。</td>
+      </tr>
+      <tr>
+        <td><strong>可重現性（Reproducibility）</strong></td>
+        <td>代碼已開源（github.com/ace-agent/ace），但部分實驗依賴 DeepSeek-V3.1 671B，對學術研究者的計算資源需求極高。</td>
+        <td>提供 7B、13B 等較小模型的完整基準實驗，降低可重現門檻。</td>
+      </tr>
+      <tr>
+        <td><strong>泛化能力（Generalizability）</strong></td>
+        <td>主要驗證 AppWorld 和金融領域；醫療與 SQL 結果僅列於附錄；在開放域對話或創意生成任務上的有效性尚不明確。</td>
+        <td>擴大評估至更多元任務（代碼生成、科學推理、開放域對話）並置於主文，強化泛化能力聲明。</td>
+      </tr>
+      <tr>
+        <td><strong>理論支撐（Theoretical Foundation）</strong></td>
+        <td>幾乎全為實驗性（empirical）結果，缺乏關於「為何演進式 Playbook 比壓縮式摘要更有效」的理論分析；grow-and-refine 的去重閾值也缺乏理論依據。</td>
+        <td>提供資訊理論視角的分析（如語境的資訊熵保留率），或補充閾值超參數的敏感性分析。</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="footer">
+  由 Paper Digest Skill 自動生成 ｜ 所有頁碼行號引用基於原始 PDF（pypdf 文字提取，行號為每頁提取文字之序號）
+</div>
+
+</body>
+</html>
