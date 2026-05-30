@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>論文摘要：Prime Factorization Using Partially Constrained Multiple QA</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --muted: #888888;
+    --accent: #4A90D9;
+    --accent-light: #e8f1fb;
+    --table-stripe: #f7f8fa;
+    --border: #e0e0e0;
+    --code-bg: #f0f4f8;
+    --h2-border: #4A90D9;
+    --success: #27ae60;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a1a1a;
+      --fg: #e8e8e8;
+      --muted: #999999;
+      --accent: #7ab3e8;
+      --accent-light: #1e2d3d;
+      --table-stripe: #242424;
+      --border: #3a3a3a;
+      --code-bg: #2d3748;
+      --h2-border: #7ab3e8;
+      --success: #2ecc71;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC",
+                 "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.85;
+    font-size: 16px;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 5rem;
+  }
+  h1 {
+    font-size: 1.65rem;
+    margin-bottom: 0.4rem;
+    line-height: 1.4;
+  }
+  h2 {
+    font-size: 1.3rem;
+    margin: 2.5rem 0 0.9rem;
+    border-bottom: 3px solid var(--h2-border);
+    padding-bottom: 0.5rem;
+    color: var(--fg);
+  }
+  h3 {
+    font-size: 1.08rem;
+    margin: 1.6rem 0 0.5rem;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  h4 {
+    font-size: 1rem;
+    margin: 1.3rem 0 0.4rem;
+    font-weight: 600;
+  }
+  p { margin-bottom: 0.9rem; }
+  .location {
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-style: italic;
+    background: var(--accent-light);
+    border-radius: 3px;
+    padding: 0.1rem 0.4rem;
+    margin-right: 0.2rem;
+    white-space: nowrap;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.2rem 0;
+    font-size: 0.88rem;
+    overflow-x: auto;
+    display: block;
+  }
+  th {
+    background: var(--accent);
+    color: #fff;
+    padding: 0.6rem 0.9rem;
+    text-align: left;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  td {
+    padding: 0.5rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: var(--table-stripe); }
+  tr:hover td { background: var(--accent-light); }
+  code {
+    background: var(--code-bg);
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+    font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+    font-size: 0.84rem;
+    color: var(--accent);
+  }
+  .keyword-list { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.6rem 0; }
+  .keyword-tag {
+    background: var(--code-bg);
+    border: 1px solid var(--accent);
+    border-radius: 5px;
+    padding: 0.2rem 0.7rem;
+    font-family: monospace;
+    font-size: 0.84rem;
+    color: var(--accent);
+  }
+  .toc {
+    background: var(--accent-light);
+    border-left: 5px solid var(--accent);
+    padding: 1.2rem 1.8rem;
+    margin-bottom: 2.5rem;
+    border-radius: 0 8px 8px 0;
+  }
+  .toc strong { font-size: 1rem; color: var(--accent); }
+  .toc ol { margin: 0.6rem 0 0 1.4rem; }
+  .toc li { margin: 0.35rem 0; }
+  .toc a { color: var(--accent); text-decoration: none; font-weight: 500; }
+  .toc a:hover { text-decoration: underline; }
+  ul, ol { margin: 0.5rem 0 0.9rem 1.5rem; }
+  li { margin: 0.35rem 0; }
+  .meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+  }
+  .meta span { margin-right: 1.2rem; }
+  .section { margin-bottom: 2.5rem; }
+  .formula-block {
+    background: var(--code-bg);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    padding: 1rem 1.4rem;
+    margin: 1rem 0;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.9rem;
+    overflow-x: auto;
+  }
+  .formula-title {
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+    font-family: inherit;
+  }
+  .symbol-list { margin: 0.4rem 0 0 1rem; font-size: 0.88rem; }
+  .symbol-list li { margin: 0.2rem 0; }
+  .intuition {
+    color: var(--muted);
+    font-size: 0.87rem;
+    margin-top: 0.4rem;
+    font-style: italic;
+  }
+  .badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 12px;
+    padding: 0.1rem 0.7rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    vertical-align: middle;
+    margin-left: 0.4rem;
+  }
+  .badge-green {
+    background: var(--success);
+  }
+  .finding-box {
+    background: var(--accent-light);
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    padding: 1rem 1.4rem;
+    margin: 1.2rem 0;
+  }
+  .limitation-item {
+    background: var(--table-stripe);
+    border-left: 4px solid #e67e22;
+    border-radius: 0 4px 4px 0;
+    padding: 0.6rem 1rem;
+    margin: 0.6rem 0;
+    font-size: 0.92rem;
+  }
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.82rem;
+    text-align: center;
+  }
+  @media (max-width: 600px) {
+    body { padding: 1.2rem 1rem 3rem; }
+    h1 { font-size: 1.3rem; }
+    table { font-size: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<h1>論文摘要：Prime Factorization Using Partially Constrained Multiple Quantum Annealing With Analytical and Pattern-Based Variable Reduction</h1>
+<div class="meta">
+  <span>📄 IEEE Transactions on Computers, Vol. 75, No. 4, April 2026</span>
+  <span>✍️ Xinyi Guo, Geguang Miao, Shinichi Nishizawa, Shinji Kimura, Takashi Sato</span>
+  <span>📅 分析日期：2026-05-30</span>
+  <span>🗂️ 原始論文：11355721.pdf</span>
+</div>
+
+<nav class="toc">
+  <strong>目錄 Table of Contents</strong>
+  <ol>
+    <li><a href="#overview">整體內容 Overview</a></li>
+    <li><a href="#methodology">研究方法 Methodology</a></li>
+    <li><a href="#results">主要結果 Results</a></li>
+    <li><a href="#keywords">英文關鍵字 Keywords</a></li>
+    <li><a href="#improvements">值得改進之處 Improvements</a></li>
+  </ol>
+</nav>
+
+<!-- ===================== 一、整體內容 ===================== -->
+<section id="overview" class="section">
+<h2>一、整體內容 Overview</h2>
+
+<h3>研究問題</h3>
+<p>
+  <span class="location">第 1 頁，Abstract</span>
+  大型半素數（semiprime, N = p × q）的質因數分解（Prime Factorization, PF）是公鑰密碼系統的安全基礎。現有以量子退火（Quantum Annealing, QA）為基礎的分解方法受限於 QUBO 變數數量過多，只能處理最多 21-bit 的半素數。本文旨在設計新的 QUBO 建模技術，大幅減少變數數量，使 QA 方法能夠分解更大的半素數。
+</p>
+
+<h3>研究背景</h3>
+<p>
+  <span class="location">第 1 頁，Introduction</span>
+  RSA 加密系統依賴於對大型半素數進行因數分解的計算困難性。Shor's algorithm 雖然能在量子電腦上以多項式時間解決 PF，但受限於 NISQ 硬體的短相干時間與高錯誤率，目前僅能分解 N=21 等小數字。量子退火（QA）作為 NISQ 友善的替代方案，使用 QUBO 公式化，但現有最好的方法（Jiang et al., Peng et al.）仍受限於 D-Wave 2000Q 只能處理最多 20-bit 半素數。
+</p>
+
+<h3>核心貢獻</h3>
+<ol>
+  <li><span class="location">第 3 頁，Section IV-A</span>提出 <strong>MulBlocks</strong>（多區塊多次退火）：將乘法表分成子問題 Block I 和 Block III 分別退火，再組合候選解，打破單次 QUBO 的規模限制。</li>
+  <li><span class="location">第 4 頁，Section IV-B</span>提出 <strong>VarLSB</strong>（LSB 端分析變數縮減）：利用低有效位元（LSB）的乘法模式分析，直接推導變數等式，消除冗餘 QUBO 變數與高階項。</li>
+  <li><span class="location">第 4 頁，Section IV-C</span>提出 <strong>VarMSB</strong>（MSB 端分析變數縮減）：透過與 √N 比較，分析高有效位元（MSB）的數值範圍約束，演算法式地固定部分因子位元（Algorithm 1）。</li>
+  <li><span class="location">第 5 頁，Section IV-D</span>提出 <strong>SpePattern</strong>（特殊模式）：針對奇位元寬且有長 MSB 側連續零序列的半素數，利用結構性特徵直接確定因子位元，大幅縮減 Block III 的變數數量。</li>
+  <li><span class="location">第 5 頁，Section IV-E</span>提出 <strong>OBB</strong>（最優區塊平衡）：動態調整 Block I 和 Block III 的列寬，最小化兩塊的項數不平衡度，提升退火求解效果（Algorithm 2）。</li>
+</ol>
+
+<h3>研究範疇</h3>
+<p>
+  <span class="location">第 6 頁，Section V-A</span>
+  本文聚焦於半素數（semiprime）的質因數分解問題，假設兩個質因子 p 和 q 的位元寬度相等，且最低有效位元固定為 1（奇數質因子）。實驗在 Fixstars' Amplify AE（GPU-based 退火模擬機）上進行，部分 SOTA 方法在同平台重新實現以確保公平比較。
+</p>
+</section>
+
+<!-- ===================== 二、研究方法 ===================== -->
+<section id="methodology" class="section">
+<h2>二、研究方法 Methodology</h2>
+
+<h3>方法概述</h3>
+<p>
+  <span class="location">第 3 頁，Section IV 引言</span>
+  本文提出五種互補的 QUBO 建模技術，核心思想是：透過分塊退火（MulBlocks）降低單次問題規模，再結合 LSB/MSB 端的分析推導（VarLSB、VarMSB）與結構性模式利用（SpePattern），以及動態負載平衡（OBB）來最小化 QUBO 變數數量，使量子退火機能在現有硬體限制下解決更大的半素數分解。
+</p>
+
+<h3>架構說明</h3>
+<p>
+  <span class="location">第 3 頁，Table II；第 4 頁，Section IV-A</span>
+  乘法表（multiplication table）被分成三個 Block，忽略變數最多的中間 Block II，僅對 Block I（LSB 側）和 Block III（MSB 側）建立各自的 QUBO 並獨立退火。退火結果（候選因子對）最後合併，透過窮舉驗證找到正確的質因子。
+</p>
+<p><strong>整體流程：</strong><br>
+  輸入半素數 N → 建立乘法表 → MulBlocks 切分 Block I / Block III → 各自應用 VarLSB（Block I）/ VarMSB + SpePattern（Block III）→ OBB 調整寬度 → 各塊獨立退火 → 組合候選 → 驗證輸出 p, q
+</p>
+
+<h3>關鍵模組</h3>
+<table>
+  <thead>
+    <tr><th>模組名稱</th><th>輸入</th><th>處理</th><th>輸出</th><th>位置</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>MulBlocks</code></td>
+      <td>半素數 N、乘法表</td>
+      <td>分成 Block I（LSB 側）、Block III（MSB 側），各建 QUBO 獨立退火</td>
+      <td>候選因子對集合</td>
+      <td><span class="location">第 3 頁，Section IV-A</span></td>
+    </tr>
+    <tr>
+      <td><code>VarLSB</code></td>
+      <td>乘法表 LSB 端欄位（2¹, 2²... 欄）</td>
+      <td>分析低位元 4/8 種模式，推導因子位元等式，消除高階 QUBO 項</td>
+      <td>變數縮減後的 Block I QUBO</td>
+      <td><span class="location">第 4 頁，Section IV-B</span></td>
+    </tr>
+    <tr>
+      <td><code>VarMSB</code></td>
+      <td>因子的 MSB 端位元</td>
+      <td>透過 Algorithm 1 逐位比較 √N，固定可確定的高位元為 0 或 1</td>
+      <td>固定的 MSB 位元值、縮減的 Block III QUBO</td>
+      <td><span class="location">第 4 頁，Section IV-C</span></td>
+    </tr>
+    <tr>
+      <td><code>SpePattern</code></td>
+      <td>奇位寬且 MSB 端有連續零的半素數</td>
+      <td>識別結構性零模式，直接確定對應因子位元</td>
+      <td>大量固定的因子位元（大幅減少 Block III 變數）</td>
+      <td><span class="location">第 5 頁，Section IV-D</span></td>
+    </tr>
+    <tr>
+      <td><code>OBB</code></td>
+      <td>Block I 和 III 的初始欄寬 w₁, w₃</td>
+      <td>Algorithm 2 遍歷 x，計算使 |T₁(w₁')-T₃(w₃')| 最小的最優偏移量 x*</td>
+      <td>平衡後的欄寬 w₁*, w₃*，使兩塊項數相近</td>
+      <td><span class="location">第 5 頁，Section IV-E</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>核心公式</h3>
+
+<div class="formula-block">
+  <div class="formula-title">QUBO 目標函數（第 2 頁，Section II-C）</div>
+  <div style="text-align:center; font-size:1.05rem; padding: 0.5rem 0;">
+    f = Σᵢ Qᵢᵢ xᵢ + Σᵢ＜ⱼ Qᵢⱼ xᵢ xⱼ
+  </div>
+  <ul class="symbol-list">
+    <li><strong>Qᵢᵢ</strong>：線性係數（linear coefficient）</li>
+    <li><strong>Qᵢⱼ</strong>：二次係數（quadratic coefficient）</li>
+    <li><strong>xᵢ, xⱼ ∈ {0,1}</strong>：二元決策變數（binary decision variables）</li>
+  </ul>
+  <div class="intuition">直覺：QA 求解器找使 f 最小化的變數賦值，即找乘法等式約束同時成立的因子位元組合。</div>
+</div>
+
+<div class="formula-block">
+  <div class="formula-title">高階項消除——懲罰轉換（第 2 頁，Section II-C）</div>
+  <div style="text-align:center; font-size:1.05rem; padding: 0.5rem 0;">
+    x₁ x₂ x₃ = y x₃ + P · (x₁x₂ − 2x₁y − 2x₂y + 3y)
+  </div>
+  <ul class="symbol-list">
+    <li><strong>y = x₁x₂</strong>：輔助變數（auxiliary variable），編碼高階積</li>
+    <li><strong>P</strong>：懲罰係數（penalty coefficient），強制 y = x₁x₂</li>
+  </ul>
+  <div class="intuition">直覺：三次項透過引入輔助變數 y 和懲罰項轉換為二次 QUBO 形式；P 過大或過小都會劣化搜尋效果。</div>
+</div>
+
+<div class="formula-block">
+  <div class="formula-title">MulBlocks 組合目標函數（第 4 頁，Section IV-A）</div>
+  <div style="text-align:center; font-size:1.05rem; padding: 0.5rem 0;">
+    f₁ = σ₁ × f₁₁ + σ₂ × f₁₂
+  </div>
+  <ul class="symbol-list">
+    <li><strong>f₁₁, f₁₂</strong>：Block I 切成兩個子塊（pieces）的各自平方誤差目標函數</li>
+    <li><strong>σ₁, σ₂</strong>：各子塊的調整係數（tunable piece coefficients）</li>
+  </ul>
+  <div class="intuition">直覺：係數 σ 調整兩子塊對 Hamiltonian 最大能量的相對貢獻，影響退火時的搜尋偏向。</div>
+</div>
+
+<h3>訓練策略</h3>
+<p>
+  <span class="location">第 6 頁，Section V-A</span>
+  <span class="location">第 9 頁，Section V-E</span>
+</p>
+<ul>
+  <li><strong>退火機器</strong>：Fixstars' Amplify AE（GPU-based 模擬量子退火），支援 10 萬個以上全連接 QUBO 變數</li>
+  <li><strong>退火時間</strong>：每塊固定 10 秒；MulBlocks 總共退火兩次（Block I 和 Block III 各一次），等效 20 秒，與 SOTA 方法比較基準一致</li>
+  <li><strong>懲罰方案</strong>：PA-1（三次項 P=2，二次項 P²=4）作為主要方案；PA-2 懲罰值為 PA-1 的兩倍</li>
+  <li><strong>重複次數</strong>：每個實例重複 100 次，取最佳成功率（success rate）</li>
+  <li><strong>驗證方式</strong>：候選因子對窮舉相乘，與目標半素數 N 比對</li>
+</ul>
+</section>
+
+<!-- ===================== 三、主要結果 ===================== -->
+<section id="results" class="section">
+<h2>三、主要結果 Results</h2>
+
+<h3>實驗設定</h3>
+<p>
+  <span class="location">第 6 頁，Section V-A</span>
+  <span class="location">第 7 頁，Table V</span>
+  資料集（dataset）：8–26 bit 半素數（SOTA 比較）；26–57 bit 半素數（擴展測試）；特殊結構的 61, 101, 389, 415, 655, 1185, 2049-bit 半素數（極端測試）。
+  評估指標（evaluation metric）：成功率 SR（Success Rate，100 次中正確的比例）、QUBO 變數數（#Var）、候選解數量（#CandI/#CandIII）、驗證時間（VerTime）。
+</p>
+
+<h3>主要比較結果</h3>
+<p><span class="location">第 7 頁，Table V</span></p>
+<table>
+  <thead>
+    <tr><th>方法</th><th>最大穩定可解位元</th><th>19-bit 變數數</th><th>20-bit 成功率</th><th>26-bit 成功率</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Jiang et al. (SOTA)</td>
+      <td>~20 bit</td>
+      <td>95</td>
+      <td>75%</td>
+      <td>1%</td>
+    </tr>
+    <tr>
+      <td>Peng et al. (SOTA)</td>
+      <td>~20 bit</td>
+      <td>90</td>
+      <td>94%</td>
+      <td>4%</td>
+    </tr>
+    <tr>
+      <td><strong>MulBlocks</strong> <span class="badge">本文</span></td>
+      <td><strong>40 bit</strong></td>
+      <td><strong>19</strong></td>
+      <td><strong>100%</strong></td>
+      <td><strong>100%</strong></td>
+    </tr>
+    <tr>
+      <td><strong>MulVar</strong> <span class="badge">本文</span></td>
+      <td><strong>47 bit</strong></td>
+      <td><strong>12</strong></td>
+      <td><strong>100%</strong></td>
+      <td><strong>100%</strong></td>
+    </tr>
+    <tr>
+      <td><strong>MulVarSpeObb</strong> <span class="badge badge-green">本文</span></td>
+      <td><strong>2049 bit（特殊結構）</strong></td>
+      <td><strong>11</strong></td>
+      <td><strong>100%</strong></td>
+      <td><strong>100%</strong></td>
+    </tr>
+  </tbody>
+</table>
+<p style="font-size:0.85rem; color: var(--muted);">* 19-bit 半素數 376,289（=571×659）為代表性範例。2049-bit 成功僅限於奇位元寬且有長 MSB 零序列的特殊結構半素數。</p>
+
+<h3>消融實驗（Ablation Study）</h3>
+<p><span class="location">第 9–10 頁，Section V-E</span></p>
+<ul>
+  <li><strong>懲罰值（Penalty Value）</strong>：在 51-bit 半素數（1,495,000,453,129,013）上，Block I 最優懲罰區間 [23,400, 37,000]，候選數從 87 激增至 24,300；Block III 最優區間 [6,170, 10,000]，設 6,160 僅 87 候選，稍增至 6,170 則達 11,851。整體成功率從 19% 提升至 81%。</li>
+  <li><strong>退火時間（Annealing Time）</strong>：測試 10–100 秒（10 秒遞增）於 51-bit 半素數，成功率與候選數量均隨退火時間增加而提升並趨於飽和（Figure 3–4）。</li>
+  <li><strong>子塊數（Number of Pieces）</strong>：在 46, 47, 51, 53, 58-bit 半素數上（Table VIII），3-piece 成功率均低於 2-piece，因三塊化後丟失鄰欄變數間積的關係，導致資訊損失並增加輔助變數。</li>
+  <li><strong>係數（Coefficients）</strong>：在 40-bit 半素數上，σ₁/σ₂ 從 1 到 100,000 的組合測試，整體成功率波動 40%–60%；比值超過 ~77,842 或低於 1/3,149 時成功率驟降至零。</li>
+</ul>
+
+<h3>主要發現</h3>
+<div class="finding-box">
+  <span class="location">第 11 頁，Conclusion</span>
+  本文所提的 MulBlocks 和 MulVar 在變數縮減和可分解半素數位元寬度方面均顯著超越 SOTA 方法。MulBlocks 達到 40-bit 半素數 100% 成功率；MulVar 延伸至 47-bit；MulVarSpeObb 在奇位寬且有長 MSB 零序列的特殊結構條件下，成功分解最大 2049-bit 的半素數，展示出超越現有學術基準的工程可擴展性。
+</div>
+
+<h3>侷限性（作者自述）</h3>
+<div class="limitation-item">
+  <span class="location">第 10 頁，Section V-F</span>
+  <strong>1.</strong> 懲罰值的選取缺乏系統化方法，必須針對每個半素數實例經驗性調整，是 QA-based 方法標準化的主要障礙。
+</div>
+<div class="limitation-item">
+  <span class="location">第 10 頁，Section V-F</span>
+  <strong>2.</strong> 即使退火時間較長，若懲罰參數設定不當，系統仍可能收斂至次優解；退火時間無法完全補償不良的 QUBO 設計。
+</div>
+<div class="limitation-item">
+  <span class="location">第 11 頁，Conclusion</span>
+  <strong>3.</strong> 改善 QUBO 設計、權重校正與參數最佳化以解決更大一般性實例留待未來工作。
+</div>
+</section>
+
+<!-- ===================== 四、英文關鍵字 ===================== -->
+<section id="keywords" class="section">
+<h2>四、英文關鍵字 Keywords</h2>
+
+<h3>Author Keywords <span style="font-weight:400; font-size:0.85rem; color: var(--muted);">（作者提供，第 1 頁，Abstract）</span></h3>
+<div class="keyword-list">
+  <span class="keyword-tag">Quantum annealing</span>
+  <span class="keyword-tag">QUBO</span>
+  <span class="keyword-tag">prime factorization</span>
+  <span class="keyword-tag">combinatorial optimization problem</span>
+  <span class="keyword-tag">multiplication table</span>
+  <span class="keyword-tag">addition of partial products</span>
+</div>
+
+<h3>Method Keywords <span style="font-weight:400; font-size:0.85rem; color: var(--muted);">（方法相關）</span></h3>
+<ul>
+  <li><code>multiple annealing</code> — <span class="location">第 3 頁，Section IV-A</span></li>
+  <li><code>partial block decomposition</code> — <span class="location">第 3 頁，Section IV-A</span></li>
+  <li><code>analytical variable reduction</code> — <span class="location">第 4 頁，Section IV-B/C</span></li>
+  <li><code>pattern-based variable reduction</code> — <span class="location">第 5 頁，Section IV-D</span></li>
+  <li><code>optimal block balancing</code> — <span class="location">第 5 頁，Section IV-E</span></li>
+  <li><code>QUBO converter</code> — <span class="location">第 2 頁，Introduction</span></li>
+</ul>
+
+<h3>Topic Keywords <span style="font-weight:400; font-size:0.85rem; color: var(--muted);">（領域相關）</span></h3>
+<ul>
+  <li><code>quantum annealing</code> — <span class="location">第 1 頁，Abstract</span></li>
+  <li><code>prime factorization</code> — <span class="location">第 1 頁，Introduction</span></li>
+  <li><code>QUBO</code> — <span class="location">第 2 頁，Section II-C</span></li>
+  <li><code>public key cryptography</code> — <span class="location">第 1 頁，Introduction</span></li>
+  <li><code>NISQ</code> — <span class="location">第 1 頁，Introduction</span></li>
+  <li><code>adiabatic quantum computing</code> — <span class="location">第 2 頁，Section II-A</span></li>
+</ul>
+</section>
+
+<!-- ===================== 五、值得改進之處 ===================== -->
+<section id="improvements" class="section">
+<h2>五、值得改進之處 Potential Improvements</h2>
+
+<h3>作者已承認的不足</h3>
+<ol>
+  <li><span class="location">第 10 頁，Section V-F</span>懲罰值選取缺乏系統化框架，每個問題實例需經驗性調整，這限制了方法的通用性與自動化程度。</li>
+  <li><span class="location">第 10 頁，Section V-F</span>對 54-bit 以上的大型問題，搜尋空間急劇縮小，精確懲罰值調整的難度更高，目前測試的少數懲罰值不足以覆蓋最優範圍。</li>
+  <li><span class="location">第 11 頁，Conclusion</span>實驗平台限於 Amplify AE（GPU 模擬），未來應透過改進 QUBO 設計、權重校正、參數最佳化來拓展至更大一般性實例。</li>
+</ol>
+
+<h3>獨立分析觀察</h3>
+<table>
+  <thead>
+    <tr><th>維度</th><th>潛在問題</th><th>改進建議</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>方法論<br>Methodology</strong></td>
+      <td>SpePattern 僅適用於奇位元寬且具長 MSB 零序列的半素數，覆蓋範圍極為有限；2049-bit 成功並不代表對一般 RSA 模數的突破</td>
+      <td>探索更通用的結構性特徵識別方法，或結合機器學習輔助識別可利用的位元模式；研究偶位元寬的情形</td>
+    </tr>
+    <tr>
+      <td><strong>實驗設計<br>Experimental Design</strong></td>
+      <td>所有實驗均在 Amplify AE（GPU 模擬）上進行，缺乏在真實 D-Wave Advantage 量子退火機上的驗證；兩者硬體連接圖拓撲不同（Pegasus 15-way vs 全連接），QUBO 嵌入方式有差異</td>
+      <td>在 D-Wave Advantage（Pegasus 15-way）上進行相同實驗，評估真實量子硬體圖拓撲的影響</td>
+    </tr>
+    <tr>
+      <td><strong>可重現性<br>Reproducibility</strong></td>
+      <td>未提及開源代碼；PyQUBO 版本、Amplify AE 具體配置、懲罰值搜尋策略未完整文件化</td>
+      <td>公開 QUBO 轉換器代碼（含所有超參數設定），以及標準測試半素數集合，方便他人重現</td>
+    </tr>
+    <tr>
+      <td><strong>泛化能力<br>Generalizability</strong></td>
+      <td>方法假設兩個質因子位元寬度相等，不適用於實際 RSA 中位元寬差異大的情形；且僅在 Amplify AE 上驗證，跨平台泛化性未知</td>
+      <td>探索不等寬質因子分解的 QUBO 建模，並在多種退火平台上驗證方法的可移植性</td>
+    </tr>
+    <tr>
+      <td><strong>理論支撐<br>Theoretical Foundation</strong></td>
+      <td>成功率與懲罰值、候選數量之間的關係缺乏理論分析；懲罰值最優區間的存在性與寬度僅為經驗觀察，無理論解釋</td>
+      <td>建立 QUBO Hamiltonian 能量景觀（energy landscape）的理論模型，分析懲罰值對能量 gap（正確解與最近錯誤解之間的能量差）的影響</td>
+    </tr>
+  </tbody>
+</table>
+</section>
+
+<div class="footer">
+  由 Paper Digest Skill 自動生成 ｜ 所有頁碼引用基於原始 PDF 物理頁碼（第 1–13 頁）｜ 原始論文：11355721.pdf
+</div>
+
+</body>
+</html>

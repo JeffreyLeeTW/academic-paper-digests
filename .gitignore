@@ -1,0 +1,18 @@
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Claude Code session data (personal configs)
+.claude/
+
+# IEEE / publisher copyrighted papers — must NOT be redistributed
+# Storing PDFs in a private repo for personal use may be acceptable,
+# but committing them to any public repository violates IEEE copyright.
+*.pdf
+
+# Common editor / OS artifacts
+*.swp
+*.swo
+*~
+Thumbs.db

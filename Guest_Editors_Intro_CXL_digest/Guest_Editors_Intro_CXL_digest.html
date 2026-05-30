@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>論文摘要：Guest Editors' Introduction: Special Issue on CXL®</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --muted: #888888;
+    --accent: #4A90D9;
+    --table-stripe: #f5f5f5;
+    --border: #e0e0e0;
+    --code-bg: #f0f4f8;
+    --section-bg: #fafafa;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a1a1a;
+      --fg: #e8e8e8;
+      --muted: #999999;
+      --accent: #7ab3e8;
+      --table-stripe: #2a2a2a;
+      --border: #3a3a3a;
+      --code-bg: #2d3748;
+      --section-bg: #222222;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC",
+                 "Noto Sans TC", sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.8;
+    font-size: 16px;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+  h1 { font-size: 1.75rem; margin-bottom: 0.4rem; line-height: 1.3; }
+  h2 {
+    font-size: 1.35rem;
+    margin: 2.5rem 0 0.8rem;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 0.4rem;
+    counter-increment: section;
+  }
+  h3 { font-size: 1.05rem; margin: 1.6rem 0 0.5rem; color: var(--accent); }
+  h4 { font-size: 0.98rem; margin: 1.2rem 0 0.4rem; }
+  p { margin-bottom: 0.8rem; }
+  .location {
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-style: italic;
+    margin-right: 0.25rem;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0 1.5rem;
+    font-size: 0.88rem;
+  }
+  th {
+    background: var(--accent);
+    color: #fff;
+    padding: 0.6rem 0.9rem;
+    text-align: left;
+    font-weight: 600;
+  }
+  td {
+    padding: 0.5rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: var(--table-stripe); }
+  code {
+    background: var(--code-bg);
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+    font-size: 0.84rem;
+  }
+  .keyword-list { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.6rem 0 1rem; }
+  .keyword-tag {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.2rem 0.7rem;
+    font-family: "JetBrains Mono", "Fira Code", monospace;
+    font-size: 0.83rem;
+  }
+  .toc {
+    background: var(--section-bg);
+    border-left: 4px solid var(--accent);
+    padding: 1.1rem 1.6rem;
+    margin: 1.5rem 0 2.5rem;
+    border-radius: 0 6px 6px 0;
+  }
+  .toc strong { font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
+  .toc ol { margin: 0.6rem 0 0 1.4rem; }
+  .toc li { margin: 0.35rem 0; }
+  .toc a { color: var(--accent); text-decoration: none; font-weight: 500; }
+  .toc a:hover { text-decoration: underline; }
+  ul, ol { margin: 0.5rem 0 0.8rem 1.6rem; }
+  li { margin: 0.3rem 0; }
+  .meta {
+    color: var(--muted);
+    font-size: 0.84rem;
+    margin-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+    margin-top: 0.5rem;
+  }
+  .section { margin-bottom: 1rem; }
+  .notice {
+    background: var(--section-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.8rem 1.2rem;
+    font-size: 0.87rem;
+    color: var(--muted);
+    margin: 0.5rem 0 1.2rem;
+  }
+  blockquote {
+    border-left: 3px solid var(--accent);
+    padding: 0.5rem 1rem;
+    color: var(--muted);
+    margin: 0.8rem 0;
+    font-size: 0.9rem;
+  }
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+  .badge {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+    margin-right: 0.4rem;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<h1>論文摘要：Guest Editors' Introduction: Special Issue on CXL®</h1>
+<div class="meta">
+  <strong>來源</strong>：IEEE Transactions on Computers, Vol. 75, No. 4, April 2026, pp. 1232–1233 ｜
+  <strong>類型</strong>：Special Issue Guest Editorial ｜
+  <strong>分析日期</strong>：2026-05-30 ｜
+  <strong>原始檔案</strong>：11435996.pdf
+</div>
+
+<nav class="toc">
+  <strong>目錄</strong>
+  <ol>
+    <li><a href="#overview">整體內容</a></li>
+    <li><a href="#methodology">研究方法（各子文章概述）</a></li>
+    <li><a href="#results">主要結果</a></li>
+    <li><a href="#keywords">英文關鍵字</a></li>
+    <li><a href="#improvements">值得改進之處</a></li>
+  </ol>
+</nav>
+
+<!-- ══════════════════════════════════════════ -->
+<section id="overview">
+<h2>一、整體內容</h2>
+
+<h3>研究問題</h3>
+<p>
+  <span class="location">（第 1 頁，第 1–10 行）</span>
+  本文並非原創研究論文，而是 <em>IEEE Transactions on Computers</em> CXL 特刊的編輯導言。其核心命題是：<strong>Compute Express Link（CXL®）已從規格草案演進至大規模量產部署</strong>，因此本特刊彙整 12 篇來自學術界與工業界的文章，系統性地梳理 CXL 的早期部署經驗與未來研究前沿。
+</p>
+
+<h3>研究背景</h3>
+<p>
+  <span class="location">（第 1 頁，第 1–20 行）</span>
+  現代資料中心面臨四大根本挑戰：
+</p>
+<ol>
+  <li>CPU 與加速器之間缺乏一致性（coherence）存取機制</li>
+  <li>記憶體牆（memory wall）導致容量與頻寬嚴重不足</li>
+  <li>記憶體資源擱置（resource stranding）造成成本浪費</li>
+  <li>分散式系統中細粒度資料共享困難</li>
+</ol>
+<p>
+  <span class="location">（第 1 頁，第 10–20 行）</span>
+  CXL 透過複用 PCIe 實體基礎設施並引入快取一致性（cache-coherency）與記憶體語意（memory semantics），提供統一的開放標準解方。目前已有超過 60 個裝置通過 CXL 合規認證，生態系統已從規格走向量產。
+</p>
+
+<h3>核心貢獻（特刊涵蓋的四大主題）</h3>
+<p><span class="location">（第 1 頁，第 21 行 – 第 2 頁，第 30 行）</span>本特刊共 12 篇文章，分為四個主題群：</p>
+<ol>
+  <li><strong>部署實踐（Deployment Lessons）</strong>：[A1] Microsoft Azure CXL.mem 早期部署；[A2] Samsung S-Tiering 統一硬軟體記憶體分層</li>
+  <li><strong>記憶體池化與解聚合（Memory Pooling &amp; Disaggregation）</strong>：[A3] Pangaea V2；[A4] Swarm 邏輯記憶體解聚合</li>
+  <li><strong>生成式 AI 應用（Generative AI Era）</strong>：[A5–A7] RAG 管道優化；[A8] Tensor Offloading；[A9] TRACE LLM 推論頻寬</li>
+  <li><strong>近資料處理與優化（Near-Data Processing &amp; Optimization）</strong>：[A10] CMM-Ax PNM；[A11] 貝葉斯調參；[A12] CXLock 分散式鎖</li>
+</ol>
+
+<h3>研究範疇</h3>
+<p>
+  <span class="location">（第 1 頁，第 1–5 行）</span>
+  本文聚焦於<strong>系統架構與電腦工程</strong>領域，涵蓋資料中心記憶體階層、異構計算互連（heterogeneous computing interconnect）、LLM 系統部署等子領域，適用範圍為雲端資料中心與邊緣高效能運算場景。
+</p>
+</section>
+
+<!-- ══════════════════════════════════════════ -->
+<section id="methodology">
+<h2>二、研究方法（各子文章概述）</h2>
+
+<div class="notice">注意：本文為編輯導言，無獨立實驗方法。以下整理 12 篇子文章的方法論要點。</div>
+
+<h3>方法概述</h3>
+<p>
+  <span class="location">（第 1 頁，第 22 行 – 第 2 頁，第 20 行）</span>
+  各子文章分別從「量測分析」、「系統設計」與「演算法優化」三個角度探索 CXL 的實用化路徑。
+</p>
+
+<h3>各子文章方法摘要</h3>
+<table>
+  <thead>
+    <tr>
+      <th>文章</th>
+      <th>作者／機構</th>
+      <th>核心方法</th>
+      <th>位置</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>[A1]</code> CXL in Practice</td>
+      <td>Berger et al.<br>(Microsoft Azure)</td>
+      <td>量測 CXL.mem 延遲來源，發現主要瓶頸在 CPU/DRAM 內部而非 CXL 鏈路</td>
+      <td><span class="location">第 1 頁，第 25–32 行</span></td>
+    </tr>
+    <tr>
+      <td><code>[A2]</code> S-Tiering</td>
+      <td>Lee et al.<br>(Samsung)</td>
+      <td>統一 HW/SW 方案整合 CXL 記憶體至現有記憶體階層，使用 CHMU 儀器化管理資料搬移（data movement）</td>
+      <td><span class="location">第 1 頁，第 33–38 行</span></td>
+    </tr>
+    <tr>
+      <td><code>[A3]</code> Pangaea V2</td>
+      <td>H. D. Lee et al.<br>(Samsung/RedHat/Xconn)</td>
+      <td>跨伺服器解聚合記憶體（disaggregated memory），強調雲原生（cloud-native）應用協調</td>
+      <td><span class="location">第 1 頁，第 45–52 行</span></td>
+    </tr>
+    <tr>
+      <td><code>[A4]</code> Swarm</td>
+      <td>Chen et al.<br>(浙江大學/西電)</td>
+      <td>結合快取一致性存取與網路層靈活性，將記憶體分為硬體一致性與軟體管理兩區域，透過 RPC 與 compute offloading 提升效能</td>
+      <td><span class="location">第 1 頁，第 53–60 行</span></td>
+    </tr>
+    <tr>
+      <td><code>[A5]</code> RAG on CXL</td>
+      <td>Bratterud et al.<br>(ScaleMem/Micron/H3/PNNL)</td>
+      <td>在共享 CXL 記憶體上建構生產級 RAG 管道，嵌入 Wikipedia 向量資料庫，與 NVMe 分頁相比降低查詢延遲</td>
+      <td><span class="location">第 1 頁，第 67–76 行</span></td>
+    </tr>
+    <tr>
+      <td><code>[A6]</code> Bauhaus</td>
+      <td>K. Kim et al.<br>(Korea Univ./SK Hynix)</td>
+      <td>重組向量資料庫，在細粒度層級聚集「熱門」（hot）資料，提升 RAG 吞吐量（throughput）</td>
+      <td><span class="location">第 1 頁，第 77–82 行</span></td>
+    </tr>
+    <tr>
+      <td><code>[A7]</code> RAG Cluster Opt.</td>
+      <td>J. Kim et al.<br>(Samsung)</td>
+      <td>加權交錯（weighted interleaving）等記憶體管理策略，優化叢集級 RAG 效能，驗證 CXL 可作為主要記憶體資源</td>
+      <td><span class="location">第 1 頁，第 83–88 行</span></td>
+    </tr>
+    <tr>
+      <td><code>[A8]</code> Tensor Offloading</td>
+      <td>Y. Ma et al.<br>(清華大學)</td>
+      <td>CXL 記憶體池設計 + ZeRO-Infinity 整合，在 8-GPU 系統上提升超大規模深度學習效能</td>
+      <td><span class="location">第 1 頁，第 89–96 行</span></td>
+    </tr>
+    <tr>
+      <td><code>[A9]</code> TRACE</td>
+      <td>Xie et al.<br>(RPI)</td>
+      <td>透明位元平面佈局（transparent bit-plane layout）控制器架構，支援精度比例提取（precision-proportional fetching）與無損壓縮，解決 LLM 推論頻寬牆問題</td>
+      <td><span class="location">第 1 頁，第 97–104 行</span></td>
+    </tr>
+    <tr>
+      <td><code>[A10]</code> CMM-Ax</td>
+      <td>Shin et al.<br>(SK Hynix)</td>
+      <td>CXL 近記憶體處理（Processing Near Memory, PNM）原型，包含完整 OS 整合軟體堆疊</td>
+      <td><span class="location">第 2 頁，第 5–12 行</span></td>
+    </tr>
+    <tr>
+      <td><code>[A11]</code> 貝葉斯調參</td>
+      <td>Kanellis et al.<br>(U. Wisconsin-Madison)</td>
+      <td>貝葉斯優化（Bayesian Optimization）自動調整記憶體分層（memory tiering）系統的配置參數</td>
+      <td><span class="location">第 2 頁，第 13–20 行</span></td>
+    </tr>
+    <tr>
+      <td><code>[A12]</code> CXLock</td>
+      <td>T. Huang et al.<br>(阿里巴巴)</td>
+      <td>解聚合記憶體上的可擴展鎖機制（scalable locking mechanism），用於並行控制（concurrency control），作為分散式系統的關鍵基礎模組</td>
+      <td><span class="location">第 2 頁，第 21–28 行</span></td>
+    </tr>
+  </tbody>
+</table>
+</section>
+
+<!-- ══════════════════════════════════════════ -->
+<section id="results">
+<h2>三、主要結果</h2>
+
+<h3>實驗設定</h3>
+<p>
+  <span class="location">（第 1 頁，整體）</span>
+  本文為導言，無直接實驗數據。各子文章評估場景涵蓋：公有雲資料中心（Microsoft Azure）、LLM 推論伺服器、向量資料庫查詢、極大規模深度學習（8-GPU 叢集）。
+</p>
+
+<h3>各子文章關鍵結論</h3>
+<table>
+  <thead>
+    <tr>
+      <th>子文章</th>
+      <th>關鍵結論</th>
+      <th>位置</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>[A1]</code></td>
+      <td>大多數延遲變異（latency variability）來自 CPU/DRAM 內部，CXL 鏈路本身開銷可控，緩解業界對串行鏈路延遲的主要疑慮</td>
+      <td><span class="location">第 1 頁，第 26–30 行</span></td>
+    </tr>
+    <tr>
+      <td><code>[A5]</code></td>
+      <td>CXL 共享記憶體的 RAG 查詢延遲低於 NVMe 分頁方案，揭示 CXL 在生產 AI 工作負載中的可行性</td>
+      <td><span class="location">第 1 頁，第 70–75 行</span></td>
+    </tr>
+    <tr>
+      <td><code>[A8]</code></td>
+      <td>整合 ZeRO-Infinity 後在 8-GPU 系統上獲得顯著效能提升，驗證 CXL 在超大規模深度學習中的實用性</td>
+      <td><span class="location">第 1 頁，第 91–95 行</span></td>
+    </tr>
+    <tr>
+      <td><code>[A11]</code></td>
+      <td>記憶體分層系統對配置高度敏感；貝葉斯優化調參後效能顯著優於預設設定</td>
+      <td><span class="location">第 2 頁，第 16–19 行</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>消融實驗（Ablation Study）</h3>
+<p>本文未進行消融研究（ablation study）。各子文章各自包含獨立的消融或比較實驗，請參閱個別論文。</p>
+
+<h3>主要發現</h3>
+<p>
+  <span class="location">（第 1 頁，第 14–19 行）</span>
+  CXL 已進入大規模量產初期，被認為是驅動資料中心能效與成本效益的關鍵技術，其潛在影響力比肩 PCIe 與 USB 對整個計算生態的歷史性影響，預計將主導<strong>未來數十年</strong>的資料中心架構演進。
+</p>
+
+<h3>侷限性（作者自述）</h3>
+<p>
+  <span class="location">（第 2 頁，第 30–42 行）</span>
+  本文為導言性質，未直接討論技術侷限。編輯在結語指出 CXL 仍處於「初期部署階段」（initial stages），軟體生態系與 ROI 的成熟需要時間。
+</p>
+</section>
+
+<!-- ══════════════════════════════════════════ -->
+<section id="keywords">
+<h2>四、英文關鍵字</h2>
+
+<h3>Author Keywords</h3>
+<p><span class="location">未提供（本文為 Guest Editorial，無 Keywords 欄位）</span></p>
+
+<h3>Method Keywords（方法相關）</h3>
+<div class="keyword-list">
+  <span class="keyword-tag">cache-coherent interconnect</span>
+  <span class="keyword-tag">memory disaggregation</span>
+  <span class="keyword-tag">memory tiering</span>
+  <span class="keyword-tag">near-data processing (NDP/PNM)</span>
+  <span class="keyword-tag">Bayesian Optimization</span>
+  <span class="keyword-tag">lossless compression</span>
+</div>
+<ul>
+  <li><code>cache-coherent interconnect</code> — <span class="location">（第 1 頁，第 3–5 行）</span></li>
+  <li><code>memory disaggregation</code> — <span class="location">（第 1 頁，第 45–55 行）</span></li>
+  <li><code>memory tiering</code> — <span class="location">（第 1 頁，第 33–38 行）</span></li>
+  <li><code>near-data processing (NDP/PNM)</code> — <span class="location">（第 2 頁，第 5–12 行）</span></li>
+  <li><code>Bayesian Optimization</code> — <span class="location">（第 2 頁，第 13–20 行）</span></li>
+  <li><code>lossless compression</code> — <span class="location">（第 1 頁，第 97–104 行）</span></li>
+</ul>
+
+<h3>Topic Keywords（領域相關）</h3>
+<div class="keyword-list">
+  <span class="keyword-tag">Compute Express Link (CXL)</span>
+  <span class="keyword-tag">heterogeneous computing</span>
+  <span class="keyword-tag">Retrieval-Augmented Generation (RAG)</span>
+  <span class="keyword-tag">Large Language Models (LLM)</span>
+  <span class="keyword-tag">memory pooling</span>
+  <span class="keyword-tag">data center architecture</span>
+</div>
+<ul>
+  <li><code>Compute Express Link (CXL)</code> — <span class="location">（第 1 頁，第 1–3 行）</span></li>
+  <li><code>heterogeneous computing</code> — <span class="location">（第 1 頁，第 2–4 行）</span></li>
+  <li><code>Retrieval-Augmented Generation (RAG)</code> — <span class="location">（第 1 頁，第 65–66 行）</span></li>
+  <li><code>Large Language Models (LLM)</code> — <span class="location">（第 1 頁，第 64–65 行）</span></li>
+  <li><code>memory pooling</code> — <span class="location">（第 1 頁，第 8–9 行）</span></li>
+  <li><code>data center architecture</code> — <span class="location">（第 1 頁，第 16–19 行）</span></li>
+</ul>
+</section>
+
+<!-- ══════════════════════════════════════════ -->
+<section id="improvements">
+<h2>五、值得改進之處</h2>
+
+<h3>作者已承認的不足</h3>
+<ol>
+  <li>
+    <span class="location">（第 1 頁，第 14–19 行）</span>
+    編輯指出 CXL 仍處於初期部署階段，軟體生態系尚未成熟，ROI 需要時間實現。
+  </li>
+  <li>
+    <span class="location">（第 2 頁，第 32–36 行）</span>
+    結語呼籲社群持續研究，隱含現有 12 篇文章尚無法涵蓋 CXL 全部研究方向。
+  </li>
+</ol>
+
+<h3>獨立分析觀察</h3>
+<table>
+  <thead>
+    <tr>
+      <th>維度</th>
+      <th>潛在問題</th>
+      <th>改進建議</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>方法論（Methodology）</strong></td>
+      <td>作為導言文章，個別子文章的方法論深度與嚴謹性難以在此評估</td>
+      <td>應逐一閱讀各子文章的完整方法論章節</td>
+    </tr>
+    <tr>
+      <td><strong>實驗設計（Experimental Design）</strong></td>
+      <td>各子文章的實驗設定與基準線（baseline）不統一，難以跨文章比較 CXL 的整體效益</td>
+      <td>特刊可引入統一的 CXL benchmark suite（如 CXL-specific MLPerf）以促進橫向比較</td>
+    </tr>
+    <tr>
+      <td><strong>可重現性（Reproducibility）</strong></td>
+      <td>部分工業界文章（Microsoft、Samsung、阿里巴巴）的實驗環境為私有基礎設施，難以公開重現</td>
+      <td>推動建立共享 CXL testbed 或公開硬體平台，提升學術可重現性</td>
+    </tr>
+    <tr>
+      <td><strong>泛化能力（Generalizability）</strong></td>
+      <td>現有結果多基於特定工作負載（RAG、LLM inference）與特定硬體世代，尚未系統性驗證跨應用場景的普適性</td>
+      <td>在更多工作負載（資料庫、圖計算、科學計算）上驗證 CXL 效益</td>
+    </tr>
+    <tr>
+      <td><strong>理論支撐（Theoretical Foundation）</strong></td>
+      <td>多數貢獻屬於系統工程與實驗性優化，理論分析（如最優記憶體分層的資訊理論下界）相對薄弱</td>
+      <td>結合排隊論或最優控制理論，為記憶體分層策略提供理論保證</td>
+    </tr>
+  </tbody>
+</table>
+</section>
+
+<div class="footer">
+  由 Paper Digest Skill 自動生成 ｜ 所有頁碼行號引用基於原始 PDF（11435996.pdf）
+</div>
+
+</body>
+</html>

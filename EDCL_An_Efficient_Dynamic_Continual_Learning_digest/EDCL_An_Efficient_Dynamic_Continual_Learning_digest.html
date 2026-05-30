@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>論文摘要：EDCL: An Efficient Dynamic Continual Learning Framework for IoT Systems</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --muted: #888888;
+    --accent: #4A90D9;
+    --accent-light: #e8f2fb;
+    --table-stripe: #f5f5f5;
+    --border: #e0e0e0;
+    --code-bg: #f0f4f8;
+    --success: #27ae60;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a1a1a;
+      --fg: #e8e8e8;
+      --muted: #999999;
+      --accent: #7ab3e8;
+      --accent-light: #1e2d3d;
+      --table-stripe: #2a2a2a;
+      --border: #3a3a3a;
+      --code-bg: #2d3748;
+      --success: #2ecc71;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC",
+                 "Noto Sans TC", sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.8;
+    font-size: 16px;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+  h1 { font-size: 1.7rem; margin-bottom: 0.4rem; line-height: 1.4; }
+  h2 {
+    font-size: 1.35rem;
+    margin: 2.5rem 0 0.8rem;
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 0.4rem;
+    color: var(--accent);
+  }
+  h3 { font-size: 1.05rem; margin: 1.6rem 0 0.5rem; font-weight: 700; }
+  h4 { font-size: 0.95rem; margin: 1.2rem 0 0.4rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  p { margin-bottom: 0.8rem; }
+  .loc {
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-style: italic;
+    margin-right: 0.3rem;
+    white-space: nowrap;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0 1.5rem;
+    font-size: 0.88rem;
+  }
+  th {
+    background: var(--accent);
+    color: #fff;
+    padding: 0.55rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+  }
+  td {
+    padding: 0.48rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: var(--table-stripe); }
+  tr.highlight td { background: var(--accent-light); font-weight: 600; }
+  code {
+    background: var(--code-bg);
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+    font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+    font-size: 0.83rem;
+  }
+  .keyword-list { display: flex; flex-wrap: wrap; gap: 0.45rem; margin: 0.6rem 0 1rem; }
+  .keyword-tag {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 0.2rem 0.65rem;
+    font-family: monospace;
+    font-size: 0.82rem;
+  }
+  .toc {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.5rem;
+    margin-bottom: 2.5rem;
+    border-radius: 0 6px 6px 0;
+  }
+  .toc strong { color: var(--accent); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .toc ol { margin: 0.5rem 0 0 1.2rem; }
+  .toc li { margin: 0.35rem 0; font-size: 0.92rem; }
+  .toc a { color: var(--accent); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  ul, ol { margin: 0.5rem 0 0.8rem 1.5rem; }
+  li { margin: 0.3rem 0; }
+  .section { margin-bottom: 2.5rem; }
+  .meta { color: var(--muted); font-size: 0.82rem; margin-bottom: 0.8rem; }
+  .badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.7rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 10px;
+    vertical-align: middle;
+    margin-left: 0.3rem;
+    font-weight: 600;
+  }
+  .formula-block {
+    background: var(--code-bg);
+    border-left: 3px solid var(--accent);
+    padding: 0.8rem 1.2rem;
+    margin: 0.8rem 0 1.2rem;
+    border-radius: 0 6px 6px 0;
+    font-family: "JetBrains Mono", "Consolas", monospace;
+    font-size: 0.9rem;
+    overflow-x: auto;
+  }
+  .formula-desc { margin-top: 0.5rem; font-size: 0.88rem; }
+  .formula-desc ul { margin-top: 0.3rem; }
+  .insight {
+    background: var(--accent-light);
+    border-left: 3px solid var(--success);
+    padding: 0.5rem 1rem;
+    margin-top: 0.5rem;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.88rem;
+  }
+  hr { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+  .footer {
+    color: var(--muted);
+    font-size: 0.78rem;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<h1>論文摘要：EDCL: An Efficient Dynamic Continual Learning Framework for IoT Systems</h1>
+<p class="meta">
+  發表刊物：IEEE Transactions on Computers, Vol. 75, No. 5, May 2026 ｜
+  分析日期：2026-05-29 ｜
+  原始檔案：11389162.pdf（29 頁）
+</p>
+
+<nav class="toc">
+  <strong>目錄</strong>
+  <ol>
+    <li><a href="#overview">整體內容</a> — 研究問題、背景、核心貢獻、研究範疇</li>
+    <li><a href="#methodology">研究方法</a> — 框架架構、關鍵模組、核心公式、訓練策略</li>
+    <li><a href="#results">主要結果</a> — 實驗設定、比較數字、消融實驗、侷限性</li>
+    <li><a href="#keywords">英文關鍵字</a> — Author / Method / Topic Keywords</li>
+    <li><a href="#improvements">值得改進之處</a> — 作者自述 + 獨立分析</li>
+  </ol>
+</nav>
+
+<!-- ─────────────────────────────── 一、整體內容 ─────────────────────────────── -->
+<div class="section" id="overview">
+<h2>一、整體內容</h2>
+
+<h3>研究問題</h3>
+<p>
+  <span class="loc">（第 1 頁，第 11–31 行）</span>
+  現有的持續學習（continual learning, CL）方法在解決模型遺忘（catastrophic forgetting）問題時，普遍假設訓練過程可獨佔資源，而忽略了邊緣裝置（edge device）上多應用程式同時執行所導致的 GPU 記憶體競爭問題。當低優先級的 CL 訓練程式與高優先級的推論程式（inference program）共存時，固定資源分配策略會使推論失敗率高達 50% 以上，嚴重影響用戶體驗。本文旨在設計一個能動態調整訓練資源、同時維持模型精度的高效 CL 框架。
+</p>
+
+<h3>研究背景</h3>
+<p>
+  <span class="loc">（第 2 頁，第 65–97 行）</span>
+  隨著 IoT 設備數量增長，邊緣裝置上的智慧應用（如智慧家居感測、工業數據分析、醫療穿戴監控）需要在隱私和頻寬限制下於裝置端進行模型訓練，且同時必須持續執行推論任務。傳統 CL 方法（包括正則化方法（regularization-based）與回放方法（replay-based））在分配固定資源的情況下，無法因應高優先級推論程式動態變化的記憶體需求，導致資源衝突頻繁。
+</p>
+<p>
+  <span class="loc">（第 3 頁，第 125–160 行）</span>
+  現有邊緣端排程研究（如 Ekya [21]、Zeng et al. [22]）僅考慮運算資源競爭，忽略 GPU 記憶體競爭這一硬性約束；且主要聚焦於 domain-incremental 設定，對 class-incremental 和 task-incremental 情境的支援有限。
+</p>
+
+<h3>核心貢獻</h3>
+<p><span class="loc">（第 4 頁，第 218–224 行）</span></p>
+<ol>
+  <li>透過<strong>離線分析（offline profiling）</strong>建立批次大小（batch size）、訓練時間與記憶體消耗之間的量化關係三元組（triplet）配置檔，作為線上搜尋依據。</li>
+  <li>提出<strong>動態持續學習模組（DCL）</strong>，基於高優先級推論程式的即時記憶體占用動態調整訓練策略，防止相互干擾。</li>
+  <li>提出<strong>自適應分層緩衝區交換模組（AHBS）</strong>，利用熵（entropy）導引的重要性評分在記憶體緩衝區與磁碟緩衝區間動態交換樣本，降低歷史知識遺忘。</li>
+</ol>
+
+<h3>研究範疇</h3>
+<p>
+  <span class="loc">（第 3–4 頁，第 162–190 行）</span>
+  本文聚焦於邊緣伺服器和具有中等運算能力的邊緣裝置（如 NVIDIA Jetson 系列、工業邊緣閘道）上的 GPU 記憶體資源競爭問題，適用於 class-incremental（Class-IL）與 task-incremental（Task-IL）兩種 CL 設定。CPU、I/O、網路頻寬等軟性約束不在主要優化範疇內。
+</p>
+</div>
+
+<!-- ─────────────────────────────── 二、研究方法 ─────────────────────────────── -->
+<div class="section" id="methodology">
+<h2>二、研究方法</h2>
+
+<h3>方法概述</h3>
+<p>
+  <span class="loc">（第 7 頁，第 421–446 行）</span>
+  EDCL 是一個可與現有基於回放（replay-based）的 CL 方法無縫整合的動態框架，核心思想是：透過<strong>離線建立批次策略配置檔</strong>，在線上動態監控高優先級推論程式的資源消耗，進而即時選擇滿足記憶體限制的最優批次策略，同時用熵導引的分層緩衝區交換來緩解遺忘。
+</p>
+
+<h3>架構說明</h3>
+<p>
+  <span class="loc">（第 8 頁，第 490–492 行，Figure 5）</span>本圖呈現了 EDCL 的兩階段框架：
+</p>
+<ul>
+  <li><strong>離線階段（Offline Stage）</strong>：對不同批次大小下的 CL 方法進行資源分析，產生訓練時間、記憶體用量的配置文件（triplet file）。</li>
+  <li><strong>線上階段（Online Stage）</strong>：包含 DCL 模組（資源監控 + 排程器）與 AHBS 模組（熵評分 + 自適應交換比率），前者確保推論不被干擾，後者維持回放緩衝區的樣本多樣性與重要性。</li>
+</ul>
+
+<h3>關鍵模組</h3>
+<table>
+  <thead>
+    <tr><th>模組名稱</th><th>輸入</th><th>處理</th><th>輸出</th><th>位置</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>離線分析</strong><br>Offline Profiling</td>
+      <td>不同批次大小的訓練過程</td>
+      <td>記錄每個批次大小對應的訓練時間與 GPU 記憶體用量，按時間間隔篩選最省記憶體的三元組</td>
+      <td>優化後的配置文件 T'</td>
+      <td><span class="loc">第 8 頁，第 448–522 行</span></td>
+    </tr>
+    <tr>
+      <td><strong>動態 CL 模組</strong><br>DCL</td>
+      <td>高優先級推論程式的記憶體占用序列 S（100 Hz 採樣）</td>
+      <td>計算可用記憶體上限 m<sub>available</sub>，從 T' 搜尋最短訓練時間且記憶體滿足限制的批次策略</td>
+      <td>動態調整後的批次大小 b</td>
+      <td><span class="loc">第 9 頁，第 524–583 行</span></td>
+    </tr>
+    <tr>
+      <td><strong>自適應分層緩衝區交換</strong><br>AHBS</td>
+      <td>記憶體緩衝區 B<sub>m</sub> 中的樣本及模型輸出</td>
+      <td>計算每個樣本的熵重要性評分 σ，以 sigmoid 函數自適應調整交換比率 r，以非同步程序從磁碟緩衝區 B<sub>d</sub> 換入高重要性樣本</td>
+      <td>更新後的記憶體緩衝區 B<sub>m</sub></td>
+      <td><span class="loc">第 10–11 頁，第 604–735 行</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>核心公式</h3>
+
+<h4>公式 (5) — 可用記憶體上限計算</h4>
+<span class="loc">（第 9 頁，第 551–560 行）</span>
+<div class="formula-block">
+  m<sub>available</sub> = (M − m<sub>max</sub>) × α
+</div>
+<div class="formula-desc">
+  <ul>
+    <li><code>M</code>：裝置的 GPU 記憶體總容量</li>
+    <li><code>m<sub>max</sub></code>：時間窗口內推論程式的最大 GPU 記憶體占用量</li>
+    <li><code>α = 0.8</code>：收縮係數，為高優先級任務保留 20% 安全裕量，防止測量誤差導致衝突</li>
+  </ul>
+  <div class="insight">💡 直覺解釋：EDCL 不直接使用理論上限，而是預留 20% 安全邊距，確保即使資源測量有偏差也不會干擾推論程式。</div>
+</div>
+
+<h4>公式 (6) — 樣本熵計算</h4>
+<span class="loc">（第 10 頁，第 593–599 行）</span>
+<div class="formula-block">
+  H(f(x<sub>i</sub>; θ)) = −Σ<sub>j=1</sub><sup>c</sup> [f<sub>j</sub>(x<sub>i</sub>; θ) · log(f<sub>j</sub>(x<sub>i</sub>; θ))]
+</div>
+<div class="formula-desc">
+  <ul>
+    <li><code>f<sub>j</sub>(x<sub>i</sub>; θ)</code>：模型對樣本 x<sub>i</sub> 在第 j 個類別的預測機率</li>
+    <li><code>c</code>：類別總數</li>
+  </ul>
+  <div class="insight">💡 熵越高表示模型對該樣本分類越不確定，需要優先保留在緩衝區中以維持決策邊界。</div>
+</div>
+
+<h4>公式 (7) — 自適應交換比率</h4>
+<span class="loc">（第 11 頁，第 665–672 行）</span>
+<div class="formula-block">
+  r = r<sub>min</sub> + (r<sub>max</sub> − r<sub>min</sub>) / [1 + e<sup>−λ(H̄<sub>W</sub> − H̄<sub>Xb</sub>)</sup>]
+</div>
+<div class="formula-desc">
+  <ul>
+    <li><code>r<sub>min</sub> = 0.2, r<sub>max</sub> = 0.8</code>：交換比率範圍</li>
+    <li><code>H̄<sub>W</sub></code>：滑動窗口 W 中的歷史平均熵</li>
+    <li><code>H̄<sub>Xb</sub></code>：當前批次 X<sub>b</sub> 的平均熵</li>
+    <li><code>λ = 2</code>：溫度係數</li>
+  </ul>
+  <div class="insight">💡 當前批次熵高於歷史平均時（資料較難），降低交換率保留重要樣本；反之則提高交換率引入新樣本。</div>
+</div>
+
+<h4>公式 (8) — 重要性評分函數</h4>
+<span class="loc">（第 11 頁，第 685–694 行）</span>
+<div class="formula-block">
+  σ(x<sub>i</sub>) = {<br>
+  &nbsp;&nbsp;1/(2u) · H(f(x<sub>i</sub>; θ)),        若 f(x<sub>i</sub>; θ) = y<sub>i</sub>（分類正確）<br>
+  &nbsp;&nbsp;1/(2u) · [2u − H(f(x<sub>i</sub>; θ))], 若 f(x<sub>i</sub>; θ) ≠ y<sub>i</sub>（分類錯誤）
+</div>
+<div class="formula-desc">
+  <ul>
+    <li><code>u</code>：最大熵值（= log c）</li>
+  </ul>
+  <div class="insight">💡 分類正確但不確定（高熵）的樣本對決策邊界最有價值；分類錯誤且高自信（低熵）的樣本需要強化學習，兩者均優先保留。</div>
+</div>
+
+<h3>訓練策略</h3>
+<p>
+  <span class="loc">（第 13 頁，第 987–992 行）</span>
+  所有方法均使用 <strong>SGD 優化器（optimizer）</strong>，學習率從 {0.01, 0.03, 0.1} 中 grid search 選擇。EDCL 超參數：滑動窗口大小 k<sub>w</sub> = 3，r<sub>min</sub> = 0.2，r<sub>max</sub> = 0.8，λ = 2。CIFAR-10 訓練 50 個 epoch，CIFAR-100 和 Tiny-ImageNet 訓練 100 個 epoch。
+</p>
+</div>
+
+<!-- ─────────────────────────────── 三、主要結果 ─────────────────────────────── -->
+<div class="section" id="results">
+<h2>三、主要結果</h2>
+
+<h3>實驗設定</h3>
+<p>
+  <span class="loc">（第 13 頁，第 751–1004 行）</span>
+  <strong>資料集（dataset）</strong>：CIFAR-10（5 任務/各 2 類）、CIFAR-100（10 任務/各 20 類）、Tiny-ImageNet（10 任務/各 20 類）<br>
+  <strong>評估指標（evaluation metric）</strong>：分類精度（Class-IL / Task-IL）、訓練時間（秒）、推論成功率（SR）、吞吐量完成率（CR）<br>
+  <strong>硬體</strong>：Intel Xeon Platinum 8474C + NVIDIA RTX-4090（24 GB）；邊緣驗證：NVIDIA Jetson XAVIER NX（8 GB 統一記憶體）
+</p>
+
+<h3>主要比較結果（CIFAR-10）</h3>
+<span class="loc">（第 14 頁，Table I）</span>
+<table>
+  <thead>
+    <tr><th>方法</th><th>Class-IL 精度</th><th>Task-IL 精度</th><th>訓練時間 (s)</th><th>緩衝區大小</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>ER-ACE_4GB</td><td>62.23%</td><td>91.66%</td><td>8,880</td><td>500</td></tr>
+    <tr><td>ER-ACE_8GB</td><td>65.69%</td><td>92.00%</td><td>10,800</td><td>1,000</td></tr>
+    <tr><td>ER-ACE_16GB</td><td>64.91%</td><td>91.89%</td><td>33,120</td><td>2,000</td></tr>
+    <tr><td>ER-ACE_Ekya</td><td>64.28%</td><td>92.22%</td><td>9,540</td><td>500</td></tr>
+    <tr class="highlight"><td>ER-ACE_EDCL ✦</td><td><strong>82.20%</strong></td><td><strong>96.70%</strong></td><td><strong>6,538</strong></td><td>500</td></tr>
+    <tr><td>DER++_4GB</td><td>63.40%</td><td>91.25%</td><td>20,880</td><td>500</td></tr>
+    <tr><td>DER++_16GB</td><td>65.88%</td><td>91.75%</td><td>77,700</td><td>2,000</td></tr>
+    <tr><td>DER++_Ekya</td><td>66.63%</td><td>91.28%</td><td>22,020</td><td>500</td></tr>
+    <tr class="highlight"><td>DER++_EDCL ✦</td><td><strong>77.62%</strong></td><td><strong>96.34%</strong></td><td><strong>15,433</strong></td><td>500</td></tr>
+  </tbody>
+</table>
+
+<p>
+  <span class="loc">（第 14–15 頁，第 1017–1051 行）</span>
+  ER-ACE_EDCL 在 Class-IL 上比最佳基準線高出 <strong>+25.13%</strong>，比 Ekya 平均高出 <strong>+22.19%</strong>；訓練時間比 4 GB 方案縮短 <strong>26.37%</strong>，比 16 GB 方案縮短 <strong>80.26%</strong>。在 Tiny-ImageNet 上，EDCL 的 Class-IL 精度平均比 Ekya 高出 <strong>+63%</strong>。
+</p>
+
+<h3>Jetson 邊緣裝置驗證</h3>
+<span class="loc">（第 18 頁，第 1302–1316 行）</span>
+<table>
+  <thead>
+    <tr><th>指標</th><th>Ekya</th><th>Static 訓練</th><th>EDCL</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>訓練時間</td><td>基準</td><td>相近</td><td>比 Ekya 少 <strong>42.92%</strong></td></tr>
+    <tr><td>推論尾延遲（P95）</td><td>最高</td><td>最低</td><td>比 Ekya 低 <strong>67.09%</strong></td></tr>
+    <tr><td>能耗</td><td>基準</td><td>+0.22%</td><td>比 Ekya 少 <strong>8.1%</strong></td></tr>
+  </tbody>
+</table>
+
+<h3>消融實驗（Ablation Study）</h3>
+<p>
+  <span class="loc">（第 17 頁，第 1227–1291 行，Figures 15–17）</span>
+</p>
+<ul>
+  <li><strong>AHBS 模組消融</strong>：Base → EIS（熵導引選擇 + 固定比率）→ EIS+ASR（完整 AHBS）。EIS 和 EIS+ASR 均顯著優於 Base；EIS+ASR 在所有交換預算下均優於 EIS，驗證自適應比率的有效性。</li>
+  <li><strong>DCL 模組消融</strong>：移除 DCL 後，SR 和 CR 顯著下降，且隨高記憶體消耗程式比例增加急劇惡化，而 EDCL 保持穩定高性能。</li>
+  <li><strong>計算開銷分析</strong>：AHBS 的交換比率和排序計算僅占訓練時間的 <strong>2% 和 1.7%</strong>，可忽略不計。</li>
+  <li><strong>端到端切換延遲</strong>：首次分析約 10.2 秒；快取命中（cached profile）情況下降至約 <strong>1 秒</strong>。</li>
+</ul>
+
+<h3>主要發現</h3>
+<p>
+  <span class="loc">（第 19 頁，第 1424–1433 行）</span>
+  EDCL 在 IoT 邊緣場景下成功同時實現：(1) 確保高優先級推論程式不中斷（SR 達 <strong>100%</strong>）；(2) 顯著提升 CL 模型精度（比靜態方法最高提升 <strong>25.13%</strong>）；(3) 大幅縮短訓練時間（比固定 16 GB 方案縮短 <strong>80.26%</strong>）。
+</p>
+
+<h3>侷限性（作者自述）</h3>
+<ul>
+  <li><span class="loc">（第 4 頁，第 183–190 行）</span>本文聚焦於 GPU 記憶體這一硬性約束，未處理 CPU、I/O、網路頻寬等軟性資源的競爭，限制了框架在更廣泛邊緣場景下的適用性。</li>
+  <li><span class="loc">（第 19 頁，第 1431–1433 行）</span>未來計畫延伸至多租戶（multi-tenant）設定和線上 CL 場景（online CL scenarios）。</li>
+  <li><span class="loc">（第 19 頁，第 1400–1422 行）</span>尚不支援線上類別發現（online category discovery），需搭配 OOD 檢測器和教師模型才能實現端到端的開放世界 CL。</li>
+</ul>
+</div>
+
+<!-- ─────────────────────────────── 四、英文關鍵字 ─────────────────────────────── -->
+<div class="section" id="keywords">
+<h2>四、英文關鍵字</h2>
+
+<h4>Author Keywords <span class="loc">（作者提供，第 1 頁，第 32–33 行）</span></h4>
+<div class="keyword-list">
+  <span class="keyword-tag">Continual learning</span>
+  <span class="keyword-tag">Internet of Things</span>
+  <span class="keyword-tag">machine learning</span>
+  <span class="keyword-tag">edge computing</span>
+</div>
+
+<h4>Method Keywords（方法相關）</h4>
+<div class="keyword-list">
+  <span class="keyword-tag">replay-based continual learning</span>
+  <span class="keyword-tag">offline profiling</span>
+  <span class="keyword-tag">dynamic batch size selection</span>
+  <span class="keyword-tag">entropy-based importance scoring</span>
+  <span class="keyword-tag">hierarchical memory buffer swap</span>
+  <span class="keyword-tag">adaptive swap ratio</span>
+</div>
+
+<h4>Topic Keywords（領域相關）</h4>
+<div class="keyword-list">
+  <span class="keyword-tag">catastrophic forgetting</span>
+  <span class="keyword-tag">edge intelligence</span>
+  <span class="keyword-tag">resource-constrained learning</span>
+  <span class="keyword-tag">class-incremental learning</span>
+  <span class="keyword-tag">GPU memory management</span>
+  <span class="keyword-tag">inference-training co-scheduling</span>
+</div>
+</div>
+
+<!-- ─────────────────────────────── 五、改進之處 ─────────────────────────────── -->
+<div class="section" id="improvements">
+<h2>五、值得改進之處</h2>
+
+<h3>作者已承認的不足</h3>
+<ol>
+  <li><span class="loc">（第 4 頁，第 183–190 行）</span>本文聚焦於 GPU 記憶體競爭，未處理 CPU、I/O、網路頻寬等軟性資源的競爭，這限制了框架在更廣泛邊緣場景下的適用性。</li>
+  <li><span class="loc">（第 19 頁，第 1431–1433 行）</span>目前僅驗證了單台設備場景，尚未延伸至多租戶（multi-tenant）設定，無法處理多個 CL 應用共存時的資源協調問題。</li>
+  <li><span class="loc">（第 19 頁，第 1400–1422 行）</span>EDCL 尚不支援線上類別發現（online category discovery），需搭配 OOD 檢測器和教師模型才能實現端到端的開放世界 CL。</li>
+  <li><span class="loc">（第 17 頁，第 1263–1267 行）</span>首次處理新推論工作負載時存在約 10.2 秒的高延遲（其中 8 秒為資源監控窗口），對頻繁且不規律切換推論任務的場景可能仍有影響。</li>
+</ol>
+
+<h3>獨立分析觀察</h3>
+<table>
+  <thead>
+    <tr><th>維度</th><th>潛在問題</th><th>改進建議</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>方法論</strong><br>Methodology</td>
+      <td>安全係數 α=0.8 為 empirically 設定，缺乏自適應機制；不同邊緣裝置的記憶體碎片化程度不同，固定 α 可能過於保守或不足</td>
+      <td>設計基於歷史資源測量誤差分佈自適應調整 α 的機制</td>
+    </tr>
+    <tr>
+      <td><strong>實驗設計</strong><br>Experimental Design</td>
+      <td>僅比較了 ER、ER-ACE、DER++ 三種 replay 方法，未包含近年強力 CL 基準（如 DualPrompt、CODA-Prompt）；推論任務全部基於 ResNet18 影像分類，缺乏多樣性</td>
+      <td>加入更多 state-of-the-art CL 方法和更多樣的推論任務（目標偵測、語音辨識等）</td>
+    </tr>
+    <tr>
+      <td><strong>可重現性</strong><br>Reproducibility</td>
+      <td>論文未提及代碼開源；超參數設定僅有最終值，缺少敏感性分析（如 α、λ、k<sub>w</sub> 對結果的影響範圍）</td>
+      <td>開源代碼並補充超參數敏感性分析實驗，說明各參數的合理取值範圍</td>
+    </tr>
+    <tr>
+      <td><strong>泛化能力</strong><br>Generalizability</td>
+      <td>所有實驗均在影像分類任務上進行；邊緣裝置僅驗證了 Jetson XAVIER NX 一款；設備僅有單 GPU，未考慮多 GPU 或 NPU 場景</td>
+      <td>在 NLP、時序數據等其他模態以及不同硬體平台（Raspberry Pi、Intel NCS）上驗證泛化性</td>
+    </tr>
+    <tr>
+      <td><strong>理論支撐</strong><br>Theoretical Foundation</td>
+      <td>熵導引的重要性評分方案（公式 8）雖直覺合理，但缺乏理論保證（如遺忘上界的理論分析）；AHBS 對最終精度提升的貢獻缺少收斂性分析</td>
+      <td>從 PAC 學習或 online learning 理論角度分析 AHBS 的遺忘上界，強化理論說服力</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<hr>
+<p class="footer">由 Paper Digest Skill 自動生成 ｜ 所有頁碼行號引用基於 pdftotext 提取的文字行號 ｜ 2026-05-29</p>
+
+</body>
+</html>
