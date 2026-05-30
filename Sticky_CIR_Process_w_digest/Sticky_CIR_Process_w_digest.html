@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>論文摘要：Sticky CIR Process with Potential</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --muted: #888888;
+    --accent: #4A90D9;
+    --accent2: #2c6fad;
+    --table-stripe: #f5f5f5;
+    --border: #e0e0e0;
+    --code-bg: #f0f4f8;
+    --highlight-bg: #fff8e1;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a1a1a;
+      --fg: #e8e8e8;
+      --muted: #999999;
+      --accent: #7ab3e8;
+      --accent2: #9dc5f0;
+      --table-stripe: #2a2a2a;
+      --border: #3a3a3a;
+      --code-bg: #2d3748;
+      --highlight-bg: #3a3000;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC",
+                 "Noto Sans TC", sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.85;
+    font-size: 16px;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 5rem;
+  }
+  h1 { font-size: 1.75rem; margin-bottom: 0.4rem; line-height: 1.3; }
+  h2 {
+    font-size: 1.35rem;
+    margin: 2.5rem 0 0.9rem;
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 0.4rem;
+    color: var(--accent2);
+  }
+  h3 { font-size: 1.08rem; margin: 1.6rem 0 0.5rem; color: var(--accent); }
+  h4 { font-size: 0.98rem; margin: 1.2rem 0 0.4rem; font-style: italic; }
+  p { margin-bottom: 0.85rem; }
+  .location {
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-style: italic;
+    margin-right: 0.3rem;
+    white-space: nowrap;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.1rem 0 1.5rem;
+    font-size: 0.88rem;
+  }
+  th {
+    background: var(--accent);
+    color: #fff;
+    padding: 0.55rem 0.8rem;
+    text-align: left;
+    font-weight: 600;
+  }
+  td {
+    padding: 0.48rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: var(--table-stripe); }
+  code {
+    background: var(--code-bg);
+    padding: 0.15rem 0.45rem;
+    border-radius: 3px;
+    font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+    font-size: 0.84rem;
+  }
+  pre {
+    background: var(--code-bg);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.2rem;
+    border-radius: 0 6px 6px 0;
+    overflow-x: auto;
+    margin: 1rem 0;
+    font-family: "JetBrains Mono", "Fira Code", monospace;
+    font-size: 0.84rem;
+    line-height: 1.6;
+  }
+  .keyword-list { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.6rem 0 1rem; }
+  .keyword-tag {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.2rem 0.65rem;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.82rem;
+    white-space: nowrap;
+  }
+  .toc {
+    background: var(--table-stripe);
+    border-left: 4px solid var(--accent);
+    padding: 1.1rem 1.6rem;
+    margin-bottom: 2.5rem;
+    border-radius: 0 8px 8px 0;
+  }
+  .toc strong { font-size: 1rem; }
+  .toc ol { margin: 0.5rem 0 0 1.4rem; }
+  .toc li { margin: 0.3rem 0; }
+  .toc a { color: var(--accent); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  ul, ol { margin: 0.5rem 0 0.9rem 1.8rem; }
+  li { margin: 0.3rem 0; }
+  .section { margin-bottom: 1.5rem; }
+  .meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+    padding: 0.6rem 1rem;
+    background: var(--table-stripe);
+    border-radius: 6px;
+    line-height: 1.6;
+  }
+  .formula-block {
+    background: var(--highlight-bg);
+    border-left: 4px solid var(--accent);
+    padding: 0.8rem 1.2rem;
+    margin: 1rem 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.9rem;
+  }
+  .formula-label {
+    font-weight: 700;
+    color: var(--accent2);
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+  .formula-symbols { margin-top: 0.5rem; font-size: 0.86rem; }
+  .formula-symbols li { margin: 0.15rem 0; }
+  .result-highlight {
+    background: var(--table-stripe);
+    border-left: 3px solid var(--accent);
+    padding: 0.6rem 1rem;
+    margin: 0.8rem 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.92rem;
+  }
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+  .section-num {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    width: 1.6rem;
+    height: 1.6rem;
+    text-align: center;
+    line-height: 1.6rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-right: 0.4rem;
+    vertical-align: middle;
+  }
+  .improvement-tag {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-right: 0.3rem;
+    vertical-align: middle;
+  }
+</style>
+<!-- MathJax for rendering LaTeX -->
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['$','$']], displayMath: [['$$','$$']] },
+    options: { skipHtmlTags: ['script','noscript','style','textarea'] }
+  };
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+
+<h1>論文摘要：Sticky CIR Process with Potential: Invariant Measure and Exact Sampling</h1>
+
+<div class="meta">
+  <strong>作者：</strong>Tony Shardlow（University of Bath）&emsp;
+  <strong>來源：</strong>arXiv:2605.13648v2 [math.PR]，2026 年 5 月 18 日&emsp;
+  <strong>分析日期：</strong>2026-05-30
+</div>
+
+<nav class="toc">
+  <strong>目錄</strong>
+  <ol>
+    <li><a href="#overview">整體內容</a></li>
+    <li><a href="#methodology">研究方法</a></li>
+    <li><a href="#results">主要結果</a></li>
+    <li><a href="#keywords">英文關鍵字</a></li>
+    <li><a href="#improvements">值得改進之處</a></li>
+  </ol>
+</nav>
+
+<!-- ===== Section 1: Overview ===== -->
+<section id="overview">
+<h2><span class="section-num">1</span>整體內容</h2>
+
+<h3>研究問題</h3>
+<p>
+  <span class="location">（第 1 頁，第 1–20 行）</span>
+  本文研究一維<strong>黏性 Cox–Ingersoll–Ross（CIR）過程</strong>（sticky CIR process）——定義在 $[0,\infty)$ 上、在原點具有黏性邊界條件的擴散過程。核心問題包含三層：
+</p>
+<ol>
+  <li>在 CIR 參數 $\delta \in (1,2)$ 的範圍內，過程是否適定（well-posed）？</li>
+  <li>其唯一不變測度（invariant measure）的顯式形式是什麼？</li>
+  <li>如何針對帶勢能函數 $G$ 的不變測度構建精確或近似的採樣算法？</li>
+</ol>
+
+<h3>研究背景</h3>
+<p>
+  <span class="location">（第 1–2 頁）</span>
+  動機源自 Cheltsov et al. (2026) 提出的<strong>稀疏貝葉斯推斷框架</strong>（sparse Bayesian inference）——Hadamard–Langevin 動力學。該框架將未知量寫為 $\mathbf{X} = \mathbf{u} \odot \mathbf{v}$（Hadamard 積），以 CIR 過程對 $\mathbf{u}$ 分量抽樣。
+</p>
+<p>
+  原始 $\delta = 2$ 時邊界不可達，樣本永遠不等於零，<em>無法實現真正的稀疏性</em>。將 $\delta$ 降至 $(1,2)$ 後，排斥漂移項 $(\delta-1)/(\beta u)$ 減弱，過程能在有限時間內到達原點；黏性條件阻止吸收，使不變測度在原點攜帶<strong>點質量（point mass）</strong>，混合連續密度，形成「<strong>尖峰-板塊先驗（spike-and-slab prior）</strong>」的結構。
+</p>
+
+<h3>核心貢獻</h3>
+<ol>
+  <li><span class="location">（第 1 頁）</span><strong>適定性與不變測度唯一性</strong>（定理 3.1、3.2）：為 $\delta \in (1,2)$ 的黏性 CIR 過程，證明弱解唯一存在，且不變測度唯一，為原點點質量與帶權 Gamma 型密度的混合。</li>
+  <li><span class="location">（第 1 頁）</span><strong>顯式 Green 函數</strong>（引理 4.1–4.3）：以合流超幾何函數（confluent hypergeometric functions）$M(a,b,z)$ 和 $U(a,b,z)$ 推導反射 CIR 求解算子的解析 Green 函數。</li>
+  <li><span class="location">（第 1 頁）</span><strong>G=0 精確採樣器</strong>（Algorithm 1）：利用三成分混合分佈構建精確採樣算法，可為零勢能不變測度抽取精確樣本。</li>
+  <li><span class="location">（第 1 頁）</span><strong>帶勢能的採樣算法</strong>：透過 Girsanov 變換確立傾斜不變測度（定理 5.1–5.2），並發展：
+    <ul>
+      <li>帶 Metropolis–Hastings 修正的精確採樣器（Algorithm 2）</li>
+      <li>帶 $O(h)$ 偏差的非調整 Langevin 算法（ULA，Algorithm 3，定理 5.6）</li>
+    </ul>
+  </li>
+</ol>
+
+<h3>研究範疇</h3>
+<p>
+  <span class="location">（第 1–2 頁）</span>
+  聚焦<strong>一維</strong>黏性 CIR 過程，$\delta \in (1,2)$，$[0,\infty)$ 上的擴散。數值實驗基礎參數：$\lambda=1,\,\beta=2,\,\delta=1.5$，測試三種勢能函數。完整 $d$ 維採樣器（$\mathbf{u}$ 與 $\mathbf{v}$ 聯合採樣）留待未來工作。
+</p>
+</section>
+
+<!-- ===== Section 2: Methodology ===== -->
+<section id="methodology">
+<h2><span class="section-num">2</span>研究方法</h2>
+
+<h3>方法概述</h3>
+<p>
+  <span class="location">（第 2–16 頁）</span>
+  以 <strong>Itô–McKean 時間變換</strong>建立黏性邊界，以<strong>合流超幾何函數</strong>解析求解 Green 函數，再以 <strong>Lie–Trotter 算子分裂</strong>結合黏性 CIR 求解算子構建採樣方案；勢能 $G$ 通過 <strong>Girsanov 變換</strong>引入，以 Metropolis–Hastings 修正或 ULA 處理。
+</p>
+
+<h3>架構說明</h3>
+<p><span class="location">（第 2 頁，Section 1.2）</span>論文以四層遞進結構展開：</p>
+<ol>
+  <li><strong>反射 CIR</strong>（Section 2）：建立基礎過程，速度測度無邊界原子，$m(\{0\})=0$。</li>
+  <li><strong>黏性 CIR，$G=0$</strong>（Section 3）：時間變換 $u_t = \tilde{u}_{T_t}$，速度測度加點質量 $\mu^{-1}\delta_0$，使原點可逗留。</li>
+  <li><strong>Green 函數與精確採樣</strong>（Section 4）：Kummer 方程解析解 → 三成分轉移分佈 → Algorithm 1。</li>
+  <li><strong>帶勢能 $G$ 的擴展</strong>（Section 5）：Girsanov 變換確立 $\pi$，clamped Euler 步 + 黏性 CIR 提議 → Algorithm 2（MH）/ Algorithm 3（ULA）。</li>
+</ol>
+
+<h3>關鍵模組</h3>
+<table>
+  <thead>
+    <tr><th>模組名稱</th><th>輸入</th><th>處理</th><th>輸出</th><th>位置</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>反射 CIR<br><em>Reflecting CIR</em></td>
+      <td>初始值 $x>0$，$\delta\in(1,2)$</td>
+      <td>Itô 公式化為帶權 Bessel 過程</td>
+      <td>非負強解 $\tilde{u}_t$，邊界瞬時反射</td>
+      <td><span class="location">第 4 頁，定理 2.5</span></td>
+    </tr>
+    <tr>
+      <td>黏性 CIR<br><em>Sticky CIR, G=0</em></td>
+      <td>$\tilde{u}_t$，黏性參數 $\mu$</td>
+      <td>時間變換 $A_t = t + \mu^{-1}\ell_t^0(\tilde{u})$，$u_t = \tilde{u}_{T_t}$</td>
+      <td>弱解 $u_t$，可在原點逗留</td>
+      <td><span class="location">第 5 頁，定理 3.1</span></td>
+    </tr>
+    <tr>
+      <td>Green 函數<br><em>Green's function</em></td>
+      <td>生成算子 $\mathcal{L}$，頻率 $\alpha$</td>
+      <td>Kummer 超幾何 ODE，邊界匹配 + Wronskian 正規化</td>
+      <td>解析核 $G_\alpha^{\rm sticky}(x,y)$</td>
+      <td><span class="location">第 7–9 頁</span></td>
+    </tr>
+    <tr>
+      <td>精確採樣器<br><em>Algorithm 1</em></td>
+      <td>當前狀態 $u_k$，預計算網格</td>
+      <td>三成分混合：$\{0\}$ / $(0,x)$ / $(x,\infty)$，CDF 反演</td>
+      <td>精確下一狀態 $u_{k+1}$</td>
+      <td><span class="location">第 12–13 頁</span></td>
+    </tr>
+    <tr>
+      <td>MCMC 採樣器<br><em>Algorithm 2</em></td>
+      <td>$u_k$，勢能 $G$</td>
+      <td>clamped Euler $\phi_h(x)$ + Algorithm 1 提議 + MH 接受/拒絕</td>
+      <td>精確目標 $\pi$ 的樣本</td>
+      <td><span class="location">第 14–16 頁</span></td>
+    </tr>
+    <tr>
+      <td>ULA<br><em>Algorithm 3</em></td>
+      <td>$u_k$，勢能 $G$</td>
+      <td>同 Algorithm 2，去掉接受步</td>
+      <td>帶 $O(h)$ 偏差的樣本</td>
+      <td><span class="location">第 17 頁</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>核心公式</h3>
+
+<div class="formula-block">
+  <span class="formula-label">公式 (1.1)（第 1 頁）— 黏性 CIR SDE</span>
+  $$du_t = \left[\frac{\delta-1}{\beta u_t} - \lambda u_t - G'(u_t)\right]dt + \sqrt{\frac{2}{\beta}}\,dW_t$$
+  $$\mathbf{1}_{\{u_t=0\}}\,dt = \frac{\exp(-\beta G(0))}{\mu}\,d\ell_t^0(u)$$
+  <ul class="formula-symbols">
+    <li>$\delta \in (1,2)$：CIR 參數，控制邊界可達性（accessibility）</li>
+    <li>$\mu > 0$：黏性參數（stickiness parameter），$\mu\to 0$ → 吸收，$\mu\to\infty$ → 瞬時反射</li>
+    <li>$\lambda > 0$：耗散參數；$\beta > 0$：逆溫度（inverse temperature）</li>
+    <li>$\ell_t^0(u)$：擴散局部時間（diffusion local time），第二行為「逗留條件」</li>
+  </ul>
+</div>
+
+<div class="formula-block">
+  <span class="formula-label">定理 3.2（第 5 頁）— 零勢能不變測度</span>
+  $$\pi_0(dx) = \frac{1}{Z}\left[\frac{1}{\mu}\delta_0(dx) + \beta x^{\delta-1}e^{-\lambda\beta x^2/2}\,dx\right]$$
+  <ul class="formula-symbols">
+    <li>第一項：原點的點質量（point mass），比例 $\propto 1/\mu$</li>
+    <li>第二項：帶權 Gamma 型連續密度（weighted gamma-type density on $(0,\infty)$）</li>
+    <li>$Z = 1/\mu + \int_0^\infty \beta x^{\delta-1}e^{-\lambda\beta x^2/2}\,dx < \infty$</li>
+  </ul>
+</div>
+
+<div class="formula-block">
+  <span class="formula-label">公式 (4.6)（第 7 頁）— 反射 CIR 的 Green 函數</span>
+  $$G_\alpha(x,y) = \frac{f_0(x\wedge y)\cdot U(a,b,z_{x\vee y})}{|\mathcal{W}|}, \quad |\mathcal{W}| = \lambda\beta\,\frac{\Gamma(b)}{\Gamma(a)}\left(\frac{\lambda\beta}{2}\right)^{-b}$$
+  <ul class="formula-symbols">
+    <li>$M(a,b,z) = {}_1F_1(a;b;z)$：第一類合流超幾何函數，$z=0$ 正則，Python: <code>scipy.special.hyp1f1</code></li>
+    <li>$U(a,b,z)$：第二類合流超幾何函數，$z\to\infty$ 衰減，Python: <code>scipy.special.hyperu</code></li>
+    <li>$a = \alpha/(2\lambda)$，$b = \delta/2$，$z_x = \lambda\beta x^2/2$</li>
+    <li>黏性 Green 函數加一修正：$G_\alpha^{\rm sticky}(x,y) = G_\alpha(x,y) + c_\mu U(a,b,z_x)U(a,b,z_y)/|\mathcal{W}|$</li>
+  </ul>
+</div>
+
+<div class="formula-block">
+  <span class="formula-label">定理 5.2（第 14 頁）— 帶勢能的不變測度（Gibbsian 重加權）</span>
+  $$\frac{d\pi}{d\pi_0}(u) = \frac{1}{Z}e^{-\beta G(u)},\quad Z = \int_{[0,\infty)} e^{-\beta G(u)}\,\pi_0(du)$$
+  <ul class="formula-symbols">
+    <li>勢能 $G$ 以 $e^{-\beta G}$ 因子同時重加權內部密度與邊界點質量</li>
+    <li>這與貝葉斯後驗的 Gibbsian 結構一致，使 SDE 仿真等價於後驗採樣</li>
+  </ul>
+</div>
+
+<h3>訓練策略</h3>
+<p>
+  <span class="location">（第 12 頁，Remark 4.7；第 13 頁 Algorithm 1）</span>
+  不涉及神經網絡訓練。計算成本分析：
+</p>
+<ul>
+  <li><strong>預計算</strong>（一次性）：在網格 $[0, y_{\max}]$ 上 $O(N)$ 次 $M$ 和 $U$ 評估，固定 $(\alpha, \lambda, \beta, \delta)$</li>
+  <li><strong>每步代價</strong>：$O(\log N)$ CDF 反演（二元搜索）+ 2 次超幾何函數評估</li>
+  <li>同一網格適用所有 $\mu$ 值，僅需更新標量 $c_\mu$ 和 $p_{\rm leave}$</li>
+</ul>
+</section>
+
+<!-- ===== Section 3: Results ===== -->
+<section id="results">
+<h2><span class="section-num">3</span>主要結果</h2>
+
+<h3>實驗設定</h3>
+<p>
+  <span class="location">（第 19 頁）</span>
+  基礎參數：$\lambda=1$，$\beta=2$，$\delta=1.5$。ESS（effective sample size）與 ESS/秒以 ArviZ 計算，僅統計內部鏈（$u > 0$）。
+</p>
+<ul>
+  <li><strong>實驗 1</strong>：3 種勢能 $G \in \{u^2/2,\,(u-1)^2/2,\,u^3/3\}$，3 種 $\mu \in \{0.5,1.0,2.0\}$，3 種 $\alpha \in \{2,5,10\}$，200,000 步，4 條鏈</li>
+  <li><strong>實驗 2</strong>：$\mu=1$，$G \in \{0,\,u^2/2,\,(u-1)^2/2,\,2u\}$，$\alpha=5$，$h=0.2$，30,000 步（MCMC）；ULA 偏差研究 10,000 步/α</li>
+</ul>
+
+<h3>主要比較結果</h3>
+<table>
+  <thead>
+    <tr><th>算法</th><th>邊界質量誤差</th><th>ESS/秒（相對）</th><th>精確採樣</th><th>位置</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Algorithm 2（MCMC）</td>
+      <td>≈ Monte Carlo 雜訊，無系統偏差</td>
+      <td>較低（多數設定）</td>
+      <td>是</td>
+      <td><span class="location">第 20 頁，Fig.1–2</span></td>
+    </tr>
+    <tr>
+      <td>Algorithm 3（ULA）</td>
+      <td>$O(h)$ 偏差，$\alpha$ 增大時降低</td>
+      <td>較高（多數設定）</td>
+      <td>否</td>
+      <td><span class="location">第 20 頁，Fig.1–2</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>理論邊界質量 $\pi(\{0\})$</strong><span class="location">（第 20 頁，Table 1，$\lambda=1,\beta=2,\delta=1.5,\mu=1$）：</span></p>
+<table>
+  <thead>
+    <tr><th>勢能 $G$</th><th>$\pi(\{0\})$</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>$G = 0$</td><td>0.449</td></tr>
+    <tr><td>$G = u^2/2$</td><td>0.579</td></tr>
+    <tr><td>$G = (u-1)^2/2$</td><td>0.275</td></tr>
+    <tr><td>$G = 2u$</td><td>0.844</td></tr>
+  </tbody>
+</table>
+
+<p><strong>MCMC 接受率（$\alpha=5$，$h=0.2$）</strong><span class="location">（第 23 頁，Fig.4）：</span></p>
+<table>
+  <thead>
+    <tr><th>移動類型</th><th>$G=0$</th><th>$G=u^2/2$</th><th>$G=(u-1)^2/2$</th><th>$G=2u$</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>內部→內部</td><td>1.00</td><td>0.87</td><td>0.91</td><td>0.75</td></tr>
+    <tr><td>內部→邊界</td><td>1.00</td><td>0.93</td><td>0.70</td><td>0.82</td></tr>
+    <tr><td>邊界→內部</td><td>1.00</td><td>0.96</td><td>0.86</td><td>0.77</td></tr>
+  </tbody>
+</table>
+
+<h3>消融實驗（Ablation Study）</h3>
+<p>
+  本文未進行傳統消融研究。以下觀察替代：
+</p>
+<p>
+  <span class="location">（第 20–22 頁，Fig.1）</span>
+  以「是否保留 MH 修正步驟」為分界：Algorithm 2（保留）精確目標 $\pi$；Algorithm 3（去除）引入 $O(h)$ 偏差。偏差在 $G=2u$（$G'(0)>0$ 最大）情形最為顯著；其餘勢能在測試步長範圍內偏差小於 0.03，難以與 Monte Carlo 雜訊區分。
+</p>
+
+<h3>主要發現</h3>
+<div class="result-highlight">
+  <span class="location">（第 21 頁）</span>
+  黏性 CIR 過程的不變測度具有「原子＋連續密度」的稀疏先驗結構。顯式 Green 函數使 $G\equiv 0$ 的精確採樣可行。Gibbsian 重加權（定理 5.2）被 MCMC 採樣器精確目標，或由 ULA 以 $O(h)$ 偏差近似（定理 5.6）。數值實驗確認：$G=(u-1)^2/2,\,\mu=1,\,\alpha=20$ 下，MCMC 給出 $\hat{\pi}(\{0\})=0.277$，ULA 給出 0.275，理論值 0.275。
+</div>
+
+<h3>侷限性（作者自述）</h3>
+<ol>
+  <li><span class="location">（第 21 頁，第 5–8 行）</span>分析限於一維；完整 $d$ 維採樣器需處理 $\mathbf{u}$ 與 $\mathbf{v}$ 分量的耦合，留待未來工作。</li>
+  <li><span class="location">（第 21 頁，第 8–15 行）</span>收斂分析依賴未嚴格証明的 Assumption 5.5（$\pi_0$-相對密度正則性）；黏性邊界情形的 Malliavin 微積分（Malliavin calculus）分析在文獻中尚未建立。</li>
+  <li><span class="location">（第 21 頁，第 15–20 行）</span>均勻幾何遍歷性（geometric ergodicity uniform in $h$）所需的 minorisation 估計目前仍為開放問題。</li>
+</ol>
+</section>
+
+<!-- ===== Section 4: Keywords ===== -->
+<section id="keywords">
+<h2><span class="section-num">4</span>英文關鍵字</h2>
+
+<h3>Author Keywords <span class="location">（作者提供，第 1 頁）</span></h3>
+<div class="keyword-list">
+  <span class="keyword-tag">sticky diffusion</span>
+  <span class="keyword-tag">CIR process</span>
+  <span class="keyword-tag">invariant measure</span>
+  <span class="keyword-tag">MCMC</span>
+  <span class="keyword-tag">unadjusted Langevin algorithm</span>
+  <span class="keyword-tag">sparse Bayesian inference</span>
+</div>
+
+<h3>Method Keywords（方法相關）</h3>
+<table>
+  <thead><tr><th>關鍵字</th><th>代表性位置</th></tr></thead>
+  <tbody>
+    <tr><td><code>sticky boundary condition</code></td><td><span class="location">第 1 頁</span></td></tr>
+    <tr><td><code>confluent hypergeometric functions</code></td><td><span class="location">第 7 頁</span></td></tr>
+    <tr><td><code>Metropolis-Hastings correction</code></td><td><span class="location">第 14 頁</span></td></tr>
+    <tr><td><code>Itô-McKean time change</code></td><td><span class="location">第 5 頁</span></td></tr>
+    <tr><td><code>Girsanov change of measure</code></td><td><span class="location">第 13 頁</span></td></tr>
+    <tr><td><code>Lie-Trotter operator splitting</code></td><td><span class="location">第 16 頁</span></td></tr>
+    <tr><td><code>Green's function / resolvent kernel</code></td><td><span class="location">第 7 頁</span></td></tr>
+  </tbody>
+</table>
+
+<h3>Topic Keywords（領域相關）</h3>
+<table>
+  <thead><tr><th>關鍵字</th><th>代表性位置</th></tr></thead>
+  <tbody>
+    <tr><td><code>stochastic differential equations</code></td><td><span class="location">第 1 頁</span></td></tr>
+    <tr><td><code>Markov chain Monte Carlo</code></td><td><span class="location">第 1 頁</span></td></tr>
+    <tr><td><code>sparse Bayesian inference</code></td><td><span class="location">第 1 頁</span></td></tr>
+    <tr><td><code>diffusion processes</code></td><td><span class="location">第 2 頁</span></td></tr>
+    <tr><td><code>spike-and-slab prior</code></td><td><span class="location">第 2 頁</span></td></tr>
+    <tr><td><code>Wentzell boundary condition</code></td><td><span class="location">第 6 頁</span></td></tr>
+  </tbody>
+</table>
+</section>
+
+<!-- ===== Section 5: Improvements ===== -->
+<section id="improvements">
+<h2><span class="section-num">5</span>值得改進之處</h2>
+
+<h3>作者已承認的不足</h3>
+<ol>
+  <li>
+    <span class="location">（第 21 頁，第 5–8 行）</span>
+    當前分析<strong>限於一維</strong>；完整 $d$ 維 Hadamard–Langevin 動力學採樣器，需處理 $\mathbf{u}$ 與 $\mathbf{v}$ 分量間的耦合，尚待開發。
+  </li>
+  <li>
+    <span class="location">（第 21 頁，第 8–15 行）</span>
+    <strong>Assumption 5.5 未嚴格証明</strong>：ULA 偏差定理（定理 5.6）依賴 $\pi_0$-相對密度的均勻有界性假設，作者指出黏性邊界情形下的 Malliavin 微積分估計在文獻中尚未建立。
+  </li>
+  <li>
+    <span class="location">（第 21 頁，第 15–20 行）</span>
+    <strong>幾何收斂速率缺失</strong>：Foster–Lyapunov 漂移條件已建立，但均勻幾何遍歷性所需的 minorisation 步驟目前仍為開放問題。
+  </li>
+</ol>
+
+<h3>獨立分析觀察</h3>
+<table>
+  <thead>
+    <tr><th>維度</th><th>潛在問題</th><th>改進建議</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>方法論</strong><br><em>Methodology</em></td>
+      <td>Algorithm 1 依賴對固定 $(\alpha,\lambda,\beta,\delta)$ 預計算的網格，參數變動需重新計算整個網格。$c_\mu$ 在 $\alpha\to 0$（$h\to\infty$）時分母趨零，可能數值不穩定。</td>
+      <td>研究自適應網格或無網格方法；對大步長情形考慮替代提議分佈；添加 $\alpha$ 下界的安全性警告。</td>
+    </tr>
+    <tr>
+      <td><strong>實驗設計</strong><br><em>Experimental Design</em></td>
+      <td>數值實驗固定 $\delta=1.5$，未系統測試 $\delta$ 接近邊界值（$\delta\to 1^+$ 或 $\delta\to 2^-$）時的行為；也未測試多峰（multimodal）勢能或強非凸情形。</td>
+      <td>擴展實驗至多個 $\delta$ 值；測試非凸勢能（如雙峰分佈），評估 MCMC 混合速度（mixing rate）的退化情形。</td>
+    </tr>
+    <tr>
+      <td><strong>可重現性</strong><br><em>Reproducibility</em></td>
+      <td>論文未提供代碼或數據鏈接；合流超幾何函數在 $a \gg 1$（對應 $h\to 0$，$\alpha\to\infty$）時的數值精度及穩定性未討論。</td>
+      <td>開源 Python 實現；在 Remark 4.7 補充 <code>hyp1f1</code> 和 <code>hyperu</code> 在大 $a$ 時的精度限制與替代實現建議。</td>
+    </tr>
+    <tr>
+      <td><strong>泛化能力</strong><br><em>Generalizability</em></td>
+      <td>假設 $|G'(u)|\leq C(1+u)$（線性增長），對超線性增長勢能（如 $G=u^4$）不直接適用；$d$ 維乘積結構是否保留黏性屬性尚不清楚。</td>
+      <td>研究 $G'$ 超線性增長的替代 Novikov 條件；探討 $d$ 維 Hadamard 積結構下各分量解耦的充分條件。</td>
+    </tr>
+    <tr>
+      <td><strong>理論支撐</strong><br><em>Theoretical Foundation</em></td>
+      <td>Assumption 5.5 的可省略性未被討論；相容性條件 Eq. (5.8)（$\varphi(0)=\pi(\varphi)$）的物理意義未充分解釋，限制定理 5.6 的實用範圍。</td>
+      <td>補充 Assumption 5.5 的反例或充分條件；對相容性條件提供直觀的概率解釋，或提供驗證相容性的實用判據。</td>
+    </tr>
+  </tbody>
+</table>
+</section>
+
+<div class="footer">
+  由 Paper Digest Skill 自動生成 ｜ 所有頁碼行號引用基於原始 PDF（arXiv:2605.13648v2）
+</div>
+
+</body>
+</html>
